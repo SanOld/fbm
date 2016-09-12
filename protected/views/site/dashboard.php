@@ -16,17 +16,17 @@ $this->pageTitle = 'Startseite | ' . Yii::app()->name;
         <div class="row text-left">
             <div class="col-lg-4 {{user.type == 't' && user.is_finansist == 0 ? 'm-l-200' : ''}}">
                 <a class="box-home box-1" href="/performers">
-                    <h2>Träger</h2>
+                    <h2>Модуль<br> Производство</h2>
                 </a>
             </div>
             <div class="col-lg-4">
                 <a class="box-home box-2" href="/requests">
-                    <h2>Antrag</h2>
+                    <h2>Модуль <br> Подготовка производства</h2>
                 </a>
             </div>
             <div class="col-lg-4" ng-hide="user.type == 't' && user.is_finansist == 0">
                 <a class="box-home box-3" href="/financial-request">
-                    <h2>Mittelabruf</h2>
+                    <h2>Модуль<br> Отдел продаж</h2>
                 </a>
             </div>
         </div>

@@ -13,7 +13,7 @@
         </a>
       </div>
       <div class="logo logo-print p-0 m-t-20 m-b-15 col-xs-5">
-        <a target="_blank" href="http://service.berlin.de/senatsverwaltungen/" class="pull-right">
+        <a target="_blank" href="#" class="pull-right">
           <img src="<?php echo $baseUrl; ?>/images/logo2.png" alt="logo">
         </a>
       </div>
@@ -30,8 +30,8 @@
           </a>
           <ul style="overflow: hidden; outline: none;" tabindex="5003"
               class="dropdown-menu extended pro-menu fadeInUp animated">
-            <li><a href="" ng-click="openUserProfile()"><i class="fa fa-briefcase"></i>Profil</a></li>
-            <li><a href="" ng-click="logout()"><i class="fa fa-sign-out"></i>Ausloggen</a></li>
+            <li><a href="" ng-click="openUserProfile()"><i class="fa fa-briefcase"></i>Профиль</a></li>
+            <li><a href="" ng-click="logout()"><i class="fa fa-sign-out"></i>Выход</a></li>
           </ul>
         </li>
       </ul>
