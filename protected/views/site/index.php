@@ -8,7 +8,7 @@ $this->pageTitle = 'Login | ' . Yii::app()->name;
 <div ng-controller="LoginController" class="wrapper-page animated fadeInDown">
     <div class="panel panel-color panel-primary">
         <div class="panel-heading">
-            <h3 class="text-center m-t-10">Login</h3>
+            <h3 class="text-center m-t-10">Вход в систему</h3>
         </div>
 
         <form novalidate method="post" name="form" id="loginForm" class="cmxform form-horizontal m-t-40">
@@ -16,19 +16,19 @@ $this->pageTitle = 'Login | ' . Yii::app()->name;
 
             </div>
             <div class="form-group has-feedback">
-                <label class="col-xs-12" for="username">Benutzername</label>
+                <label class="col-xs-12" for="username">Имя пользователя</label>
                 <div class="col-xs-12 wrap-line"  ng-class="{'error': fieldError('login'), 'success': fieldSuccess('login')}">
                     <input class="form-control" ng-model="user.login" type="text" id="username" name="login" required>
-                    <label ng-show="fieldError('login') && form.$submitted" class="error" for="username">Bitte Benutzername eingeben</label>
+                    <label ng-show="fieldError('login') && form.$submitted" class="error" for="username">Введите имя пользователя</label>
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     <span class="glyphicon glyphicon-ok form-control-feedback"></span>
                 </div>
             </div>
             <div class="form-group has-feedback">
-                <label class="col-xs-12" for="password">Passwort</label>
+                <label class="col-xs-12" for="password">Пароль</label>
                 <div class="col-xs-12 wrap-line"  ng-class="{'error': fieldError('password'), 'success': fieldSuccess('password')}">
                     <input class="form-control" ng-model="user.password" type="password" id="password" name="password" required>
-                    <label ng-show="fieldError('password') && form.$submitted" class="error" for="password">Bitte geben Sie ein Passwort</label>
+                    <label ng-show="fieldError('password') && form.$submitted" class="error" for="password">Пожалуйста, введите пароль</label>
                     <span class="glyphicon glyphicon-remove form-control-feedback"></span>
                     <span class="glyphicon glyphicon-ok form-control-feedback"></span>
                 </div>
@@ -39,33 +39,34 @@ $this->pageTitle = 'Login | ' . Yii::app()->name;
                     <label class="cr-styled">
                         <input ng-model="user.remember" ng-true-value="1" ng-false-value="0" type="checkbox">
                         <i class="fa"></i>
-                        Login speichern
+                        Запомнить данные
                     </label>
                 </div>
             </div>
 
             <div class="form-group text-right">
                 <div class="col-xs-12">
-                    <button ng-click="submitForm(user)" class="btn btn-block btn-lg btn-purple w-md custom-btn" type="submit">Anmelden</button>
+                    <button ng-click="submitForm(user)" class="btn btn-block btn-lg btn-purple w-md custom-btn" type="submit">Войти</button>
                 </div>
             </div>
             <div class="form-group m-t-20">
                 <div class="col-sm-12 text-center">
-                    <a href="/forgot-password">Ihr Passwort vergessen?</a>
+                    <a href="/forgot-password">Забыли пароль?</a>
                 </div>
             </div>
         </form>
     </div>
     <div class="m-t-30">
         <address class="ng-scope">
-            <strong>Stiftung SPI</strong><br/>
-            Programmagentur Jugendsozialarbeit an Berliner Schulen<br/>
-            Schicklerstr. 5-7<br/>
-            10179 Berlin
-            <p class="m-t-10">Tel.: +49 30 2888-496-0<br />
-                Fax.: +49 30 2888-496-20</p>
-            <p class="m-t-10"><a target="_blank" href="mailto:programmagentur@stiftung-spi.de">E-Mail senden</a><br/>
-                <a target="_blank" href="http://www.spi-programmagentur.de">www.spi-programmagentur.de</a></p>
+            <strong>Программа FBM</strong><br/>
+            Furniture business management<br/>
+            Управление мебельным предприятием
+            Котлова 290<br/>
+            15126 Харьков
+            <p class="m-t-10">Tel.: +3 8067 579-11-65<br />
+                Fax.: +3 8067 579-11-65</p>
+            <p class="m-t-10"><a target="_blank" href="mailto:programmfbm@host.ua">E-Mail senden</a><br/>
+                <a target="_blank" href="http://fbm-programm.ua">www.fbm-programm.ua</a></p>
         </address>
     </div>
 </div>

@@ -11,13 +11,13 @@ $this->breadcrumbs = array('Anträge');
       <div spi-hint-main header="_hint.header.title" text="_hint.header.text"></div>
       <div class="panel panel-default">        
         <div class="panel-heading clearfix">
-          <h1 class="panel-title col-lg-6">Anträge</h1>
+          <h1 class="panel-title col-lg-6">Заказы</h1>
           <div class="pull-right heading-box-print">
             <a href="javascript:window.print()" title="Drucken">
               Drucken <i class="ion-printer"></i>
             </a>
-            <button class="custom-btn btn w-xs" export-to-csv ng-click="">csv Export</button>
-            <button <?php $this->demo();?> ng-if="canByType(['a'])" ng-click="addRequest()" class="btn w-lg custom-btn" data-modal="">Antrag hinzufügen</button>
+            <button class="custom-btn btn w-xs" export-to-csv ng-click="">csv Экспорт</button>
+            <button <?php $this->demo();?> ng-if="canByType(['a'])" ng-click="addRequest()" class="btn w-lg custom-btn" data-modal="">Создать заказ</button>
           </div>
         </div>
         <div class="panel-body request-edit">
@@ -25,7 +25,7 @@ $this->breadcrumbs = array('Anträge');
             <form>
               <div class="col-lg-2">
                 <div class="form-group" ng-hide="user.type  == 't'">
-                  <label>Träger</label>
+                  <label>Клиент</label>
                   <ui-select ng-change="updateGrid()" ng-model="filter.performer_id">
                     <ui-select-match allow-clear="true" placeholder="Alles anzeigen">{{$select.selected.short_name}}</ui-select-match>
                     <ui-select-choices repeat="item.id as item in performers | filter: $select.search">
@@ -46,7 +46,7 @@ $this->breadcrumbs = array('Anträge');
               <div class="col-lg-2">
                 <div class="form-group">
                   <div class="form-group">
-                    <label>Kennziffer</label>
+                    <label>Поиск по коду</label>
                     <input ng-change="updateGrid()" type="search" ng-model="filter.code" class="form-control popup-input" placeholder="Kennziffer eingegeben" ng-hide="user.type  == 't'">
                     <ui-select ng-change="updateGrid()" ng-model="filter.code">
                       <ui-select-match allow-clear="true" placeholder="Kennziffer eingegeben">{{$select.selected.code}}</ui-select-match>
@@ -60,7 +60,7 @@ $this->breadcrumbs = array('Anträge');
               <div class="col-lg-1 custom-lg-1">
                 <div class="form-group">
                   <div class="form-group">
-                    <label>Fördertopf</label>
+                    <label>Тип заказа</label>
                     <ui-select ng-change="updateGrid()" ng-model="filter.project_type_id">
                       <ui-select-match allow-clear="true" placeholder="Alles anzeigen">{{$select.selected.name}}</ui-select-match>
                       <ui-select-choices repeat="item.id as item in projectTypes | filter: $select.search | orderBy: 'name'">
@@ -73,7 +73,7 @@ $this->breadcrumbs = array('Anträge');
               <div class="col-lg-1 custom-lg-1">
                 <div class="form-group">
                   <div class="form-group">
-                    <label>Schultyp</label>
+                    <label>Изделие</label>
                     <ui-select ng-change="updateGrid()" ng-model="filter.school_type_id">
                       <ui-select-match allow-clear="true" placeholder="Alles anzeigen">{{$select.selected.name}}</ui-select-match>
                       <ui-select-choices repeat="item.id as item in schoolTypes | filter: $select.search | orderBy: 'name'">
@@ -86,7 +86,7 @@ $this->breadcrumbs = array('Anträge');
               <div class="col-lg-1">
                 <div class="form-group">
                   <div class="form-group">
-                    <label>Jahr</label>
+                    <label>Год</label>
                     <ui-select ng-change="updateGrid()" ng-model="filter.year">
                       <ui-select-match>{{$select.selected}}</ui-select-match>
                       <ui-select-choices repeat="item as item in years | filter: $select.search | orderBy: item">
@@ -99,7 +99,7 @@ $this->breadcrumbs = array('Anträge');
               <div class="col-lg-1 custom-lg-1">
                 <div class="form-group">
                   <div class="form-group">
-                    <label>Status</label>
+                    <label>Статус</label>
                     <ui-select ng-change="updateGrid()" ng-model="filter.status_id">
                       <ui-select-match allow-clear="true" placeholder="Alles anzeigen">{{$select.selected.name}}</ui-select-match>
                       <ui-select-choices repeat="item.id as item in statuses | filter: $select.search | orderBy: 'name'">
@@ -111,14 +111,14 @@ $this->breadcrumbs = array('Anträge');
               </div>
               <div class="col-lg-2 reset-btn-width">
                 <button ng-click="resetFilter()" class="btn pull-right w-lg custom-reset"> <i class="fa fa-rotate-left"></i>
-                  <span>Filter zurücksetzen</span>
+                  <span>Сбросить</span>
                 </button>
               </div>
             </form>
           </div>            
           <div class="row m-t-10 m-b-10">
             <div class="col-lg-12">
-              <span>Prüfstatus filtern</span>
+              <span>Состояние фильтров</span>
             </div>                  
           </div>
           <div class="custom-checkbox row m-b-10">              
@@ -144,12 +144,12 @@ $this->breadcrumbs = array('Anträge');
             <div class="col-lg-2 p-r-0">
                 <button class="btn pull-right w-lg custom-reset" ng-click="allSelect(true)">
                   <i class="fa fa-check-circle"></i></i>
-                  <span>Alles auswählen</span>
+                  <span>Выбрать все</span>
                 </button>
               </div>
                <div class="col-lg-2 p-l-0">
                 <button class="btn pull-right w-lg custom-reset" ng-click="allSelect(false)"> <i class="fa ion-close-circled "></i>
-                  <span>Alles abwählen</span>
+                  <span>Сбросить</span>
                 </button>
               </div>
           </div>
@@ -165,8 +165,8 @@ $this->breadcrumbs = array('Anträge');
                       <i class="fa"></i>
                     </label>
                   </td>
-                  <td data-title="'Kennz.'" sortable="'code'">{{row.code}}</td>
-                  <td data-title="user.type != 't' ? 'Träger / Profil' : 'Schule(n)'" sortable="user.type != 't' ? 'performer_name' : 'school_name'">
+                  <td data-title="'Код'" sortable="'code'">{{row.code}}</td>
+                  <td data-title="user.type != 't' ? 'Клиент' : 'Schule(n)'" sortable="user.type != 't' ? 'performer_name' : 'school_name'">
                     <!--<span class="performer-icon" ng-class="{'unchecked':row.performer_is_checked != '1'}">{{row.performer_name}}</span>-->
                    <div class="holder-school">
                     <a ng-if="user.type != 't'" href="/performers#id={{row.performer_id}}" target="_blank">{{row.performer_name}}</a>
@@ -174,17 +174,17 @@ $this->breadcrumbs = array('Anträge');
                     <a ng-if="user.type == 't'" href="/schools#id={{school.id}}" ng-repeat="school in row.schools" class="school-td" target="_blank">{{school.name}}</a>
                    </div>
                   </td>
-                  <td data-title="'Programm'" sortable="'programm'">{{row.programm}}</td>
-                  <td data-title="'Jahr'" sortable="'year'">{{row.year}}</td>
-                  <td data-title="'Status'" sortable="'status_name'">
-                      {{(row.status_code == 'in_progress' && user.type == 't')                       ? 'Antrag bearbeiten'              : 
-                        (row.status_code == 'acceptable'  && (user.type == 'p' || user.type == 'a')) ? 'Antrag förderfähig'              :
-                        (row.status_code == 'acceptable'  && user.type == 't')                       ? 'Förderfähig – Antrag drucken' :
-                        (row.status_code == 'accept'      && user.type == 't')                       ? 'Genehmigt – Fördervertrag drucken' :
-                        (row.status_code == 'wait'        && (user.type == 'a' || user.type == 'p')) ? 'Zur Korrektur übermittelt' :
-                         row.status_name}}
+                  <td data-title="'Прграмма'" sortable="'programm'">{{row.programm}}</td>
+                  <td data-title="'Год'" sortable="'year'">{{row.year}}</td>
+                  <td data-title="'Статус'" sortable="'status_name'">
+                      {{(row.status_code == 'in_progress' )                       ? 'Принят'              : 
+                        (row.status_code == 'acceptable'  ) ? 'В работе'              :
+                        (row.status_code == 'acceptable' )                       ? 'Подготовлен' :
+                        (row.status_code == 'accept'      )                       ? 'В производстве' :
+                        (row.status_code == 'wait'       ) ? 'Требует корректировки' :
+                         'В работе'}}
                   </td>
-                  <td data-title="'Prüfstatus'">
+                  <td data-title="'Состояние частей'">
                     <div class="col-lg-4 p-0">
                       <a ng-if="isFinansist || (row.is_bonus_project == '1' && user.type == 's')" class="request-button edit-btn" href="/request/{{row.id}}#finance-plan" title="Finanzplan">
                         <span class="cell-finplan status-icon" ng-class="row.status_finance"></span>
@@ -201,9 +201,9 @@ $this->breadcrumbs = array('Anträge');
                       </a>
                     </div>
                   </td>
-                  <td data-title="'Abgabe'" sortable="'end_fill'">{{getDate(row.end_fill) | date : 'dd.MM.yyyy'}}</td>
-                  <td data-title="'Letzte Änd.'" sortable="'last_change'">{{getDate(row.last_change) | date : 'dd.MM.yyyy'}}</td>
-                  <td data-title="'Ansicht / Bearbeiten'" ng-click="setFilter()">
+                  <td data-title="'Дата сдачи'" sortable="'end_fill'">{{getDate(row.end_fill) | date : 'dd.MM.yyyy'}}</td>
+                  <td data-title="'Посл. редактирование'" sortable="'last_change'">{{getDate(row.last_change) | date : 'dd.MM.yyyy'}}</td>
+                  <td data-title="'Печать / Редактирование'" ng-click="setFilter()">
                     <a ng-click="printDocuments(row)"  ng-class=" {disabled: !userCan( 'btnPrintDocument', row.status_code)} " class="btn document" href="" title="Drucken"><i class="ion-printer"></i></a>
                     <a ng-if="canEdit(row)" class="btn edit-btn" href="/request/{{row.id}}"  title="Bearbeiten">
                       <i class="ion-edit"></i>
@@ -218,16 +218,16 @@ $this->breadcrumbs = array('Anträge');
 
               <div class="btn-row m-t-15 clearfix" ng-if="canEdit() && canByType(['a','p'])">
                 <div class="col-lg-7">
-                  <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="chooseDocuments()">Druck-Template wählen</button>
-                  <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="setBulkDuration()">Laufzeit festlegen</button>
-                  <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="setBulkStatus(4)">Förderfähig</button>
-                  <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="setBulkStatus(5)">Genehmigung</button>
+                  <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="chooseDocuments()">Шаблоны документов</button>
+                  <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="setBulkDuration()">Смена даты</button>
+                  <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="setBulkStatus(4)">Подготовлен</button>
+                  <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="setBulkStatus(5)">В производстве</button>
                 </div>
                 <div class="col-lg-3">
                   <button class="btn m-b-5" ng-click="export()">Daten exportieren</button>
                 </div> 
                 <div class="col-lg-2">
-                  <button class="btn m-b-5"  ng-disabled="!existsSelected()" ng-click="copyRequest()" disabled>Folgeantrag hinzufügen</button>
+                  <button class="btn m-b-5"  ng-disabled="!existsSelected()" ng-click="copyRequest()" disabled>Копирование заказа</button>
                 </div>
               </div>
             </div>
@@ -245,7 +245,7 @@ $this->breadcrumbs = array('Anträge');
                 <span class="cell-concept unfinished status-icon"></span>
                 <span class="cell-school unfinished status-icon"></span>
               </div>
-              Ungeprüft
+              В работе
             </div>
             <div class="notice">
               <div class="legends">
@@ -253,7 +253,7 @@ $this->breadcrumbs = array('Anträge');
                 <span class="cell-concept in_progress status-icon"></span>
                 <span class="cell-school in_progress status-icon"></span>
               </div>
-              Zur Prüfung übermittelt
+              На проверке
             </div>
             <div class="notice">
               <div class="legends">
@@ -261,7 +261,7 @@ $this->breadcrumbs = array('Anträge');
                 <span class="cell-concept accepted status-icon"></span>
                 <span class="cell-school accepted status-icon"></span>
               </div>
-              Geprüft{{user.type == 't' ? ' – Zielvereinbarung drucken' : ''}} 
+              Принят{{user.type == 't' ? ' – Zielvereinbarung drucken' : ''}} 
             </div>
             <div class="notice">
               <div class="legends">
@@ -269,7 +269,7 @@ $this->breadcrumbs = array('Anträge');
                 <span class="cell-concept rejected status-icon"></span>
                 <span class="cell-school rejected status-icon"></span>
               </div>
-              Anmerkung
+              Отклонен
             </div>
           </div>
         </div>

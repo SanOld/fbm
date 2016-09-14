@@ -119,16 +119,16 @@ spi.controller('RequestController', function ($scope, $rootScope, network, GridS
     if (result) {
       $scope.statuses = response.result;
       for(var i = 0; i < $scope.statuses.length; i++){
-        if($scope.statuses[i].code == 'in_progress' && $scope.user.type == 't'){
-          $scope.statuses[i].name = 'Antrag bearbeiten';
-        }else if($scope.statuses[i].code == 'acceptable' && ($scope.user.type == 'p' || $scope.user.type == 'a')){
-          $scope.statuses[i].name = 'Antrag förderfähig';
-        }else if($scope.statuses[i].code == 'acceptable' && $scope.user.type == 't'){
-          $scope.statuses[i].name = 'Förderfähig – Antrag drucken';
-        }else if($scope.statuses[i].code == 'accept' && $scope.user.type == 't'){
-          $scope.statuses[i].name = 'Genehmigt – Fördervertrag drucken';
-        }else if($scope.statuses[i].code == 'wait' && ($scope.user.type == 'p' || $scope.user.type == 'a')){
-          $scope.statuses[i].name = 'Zur Korrektur übermittelt';
+        if($scope.statuses[i].code == 'in_progress' ){
+          $scope.statuses[i].name = 'Создан';
+        }else if($scope.statuses[i].code == 'acceptable' ){
+          $scope.statuses[i].name = 'В работе';
+        }else if($scope.statuses[i].code == 'acceptable'){
+          $scope.statuses[i].name = 'Подготовлен';
+        }else if($scope.statuses[i].code == 'accept' ){
+          $scope.statuses[i].name = 'В производстве';
+        }else if($scope.statuses[i].code == 'wait' ){
+          $scope.statuses[i].name = 'Требует исправления';
         };
       };
       $scope.statuses.push($scope.statuses[2]);  //change order of icons to not to do changes to all pages

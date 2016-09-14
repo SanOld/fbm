@@ -1,11 +1,10 @@
-<nav class="navbar navbar-default header-nav m-b-0">
-	<div class="container-fluid">
+<nav class="navbar navbar-default header-nav m-b-0 center-block">
+	<div class="container">
 		<ul class="nav navbar-nav">
-			<li ng-class="{'active': _m=='dashboard'}"><a href="/dashboard">Главная</a></li>
+			<li ng-class="{'active': _m=='dashboard'}"><a href="/dashboard">Модули</a></li>
 			<!--<li><a href="/request-list.php">Anträge</a></li>-->
       <li><a href="/requests">Заказы</a></li>
       <li><a href="/requests">Изделия</a></li>
-      <li><a href="/requests">Расчеты</a></li>
       <li><a href="/requests">Договора</a></li>
       <?php if(safe(Yii::app()->session['rights']['summary'], 'show') ||
                safe(Yii::app()->session['rights']['financial-request'], 'show') ||
@@ -58,7 +57,7 @@
                safe(Yii::app()->session['rights']['email-templates'], 'show') || 
                safe(Yii::app()->session['rights']['audit'], 'show')): ?>
 			<li ng-class="{'active': ['hint'].indexOf(_m) !== -1}" class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Система управления</a>
+				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Управление</a>
 				<ul class="dropdown-menu">
           <?php if(Yii::app()->session['rights']['document-templates']['show']): ?>
             <li><a href="/document-templates">Шаблоны документов</a></li>

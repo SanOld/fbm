@@ -16,7 +16,7 @@ $this->breadcrumbs = array('Anträge'=>'/requests', 'Antrag {{request_code}}');
 
 			<div class="panel panel-default" ng-cloak>
 				<div class="panel-heading heading-noborder clearfix">
-                  <h1 class="panel-title col-lg-6">Antrag {{requestYear}} <span ng-show="projectID">({{projectID}})</span>  #{{requestID}}</h1>
+                  <h1 class="panel-title col-lg-6">Заказ {{requestYear}} <span ng-show="projectID">({{projectID}})</span>  #{{requestID}}</h1>
 <!--					<div class="pull-right heading-box-print">
 						<a href="javascript:window.print()">Drucken <i class="ion-printer"></i></a>
 					</div>-->
@@ -24,38 +24,38 @@ $this->breadcrumbs = array('Anträge'=>'/requests', 'Antrag {{request_code}}');
         <ng-form name="form">
             <button ng-if="userCan('send')" class="btn w-lg btn-lg btn-success m-b-10 m-t-30 pull-right" ng-click="sendToAccept()">Zur Prüfung übermitteln</button>
 				<uib-tabset class="panel-body request-order-nav" active="tabActive" ng-cloack>
-					<uib-tab class="project" index="'project-data'" select="setTab('project-data')" heading="Projektdaten">
+					<uib-tab class="project" index="'project-data'" select="setTab('project-data')" heading="Данные заказа">
 						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-project-data.php'); ?>
           </uib-tab>
-					<uib-tab ng-if="isFinansist || (is_bonus_project == '1' && user_type == 's')" class="finance {{financeStatus}}" index="'finance-plan'" select="setTab('finance-plan')" heading="Finanzplan">
+					<uib-tab ng-if="isFinansist || (is_bonus_project == '1' && user_type == 's')" class="finance {{financeStatus}}" index="'finance-plan'" select="setTab('finance-plan')" heading="Платежи">
 						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-financial-plan.php'); ?>
 					</uib-tab>
-					<uib-tab class="concepts {{conceptStatus}}" index="'school-concepts'" select="setTab('school-concepts')" heading="Konzept">
+					<uib-tab class="concepts {{conceptStatus}}" index="'school-concepts'" select="setTab('school-concepts')" heading="Доп. услуги">
 						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-concept-data.php'); ?>
 					</uib-tab>
-          <uib-tab class="schools-goals {{goalsStatus}}"  index="'schools-goals'" select="setTab('schools-goals')" heading="Entwicklungsziele">
+          <uib-tab class="schools-goals {{goalsStatus}}"  index="'schools-goals'" select="setTab('schools-goals')" heading="Состав заказа">
 						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-goals-data.php'); ?>
           </uib-tab>
 				</uib-tabset>
 				<br>
 				<div class="form-group group-btn row no-print">
 					<div class="col-lg-{{(userCan('changeStatus_print') || userCan('changeStatus_lock')) && userCan('reopen') ? '6' : '5'}} text-left">
-            <a ng-show="userCan('delete')" class="btn-deactivate request" ng-click="block()" id="sa-warning">DEAKTIVIEREN</a>
+            <a ng-show="userCan('delete')" class="btn-deactivate request" ng-click="block()" id="sa-warning">Отклонить</a>
 <!--						<button ng-show="userCan('delete')" ng-click="block()" class="btn btn-icon btn-danger btn-lg sweet-4" id="sa-warning"><i class="fa fa-trash-o"></i></button>-->
 						<button ng-show="userCan('reopen') && !banToReopen" class="btn w-lg custom-btn btn-lg {{userCan('changeStatus_print') || userCan('changeStatus_lock') && userCan('reopen')? 'request-new-open' : ''}}" ng-click="setBulkStatus(3)">
 							<i class="fa fa-rotate-left"></i>
-							<span>Neu eröffnen</span>
+							<span>В работе</span>
 						</button>
-						<button ng-show="userCan('changeStatus_print')" class="btn w-lg custom-btn btn-lg {{userCan('changeStatus_print') && userCan('delete') && !userCan('reopen') ? 'request-acceptable' : user.type != 'p' ? 'request-acceptable-reopen' : ''}}" ng-click="setBulkStatus(4)" title="Antrag ist förderfähig">Förderfähig</button>
-						<button ng-show="userCan('changeStatus_lock')" class="btn w-lg custom-btn btn-lg {{userCan('changeStatus_lock') && userCan('delete') ? 'request-accept' : ''}}" ng-click="setBulkStatus(5)" title="Antrag genehmigen">GENEHMIGEN</button>
+						<button ng-show="userCan('changeStatus_print')" class="btn w-lg custom-btn btn-lg {{userCan('changeStatus_print') && userCan('delete') && !userCan('reopen') ? 'request-acceptable' : user.type != 'p' ? 'request-acceptable-reopen' : ''}}" ng-click="setBulkStatus(4)" title="Antrag ist förderfähig">Подготовлен</button>
+						<button ng-show="userCan('changeStatus_lock')" class="btn w-lg custom-btn btn-lg {{userCan('changeStatus_lock') && userCan('delete') ? 'request-accept' : ''}}" ng-click="setBulkStatus(5)" title="Antrag genehmigen">В производство</button>
 					</div>
           <div class="col-lg-2 text-left">
-            <button class="btn w-lg cancel-btn btn-lg {{(userCan('changeStatus_print') || userCan('changeStatus_lock') || userCan('reopen')) && userCan('delete') ? 'request-back' : ''}}" ng-click="cancel()" title="Abbrechen">Zur Übersicht</button>
+            <button class="btn w-lg cancel-btn btn-lg {{(userCan('changeStatus_print') || userCan('changeStatus_lock') || userCan('reopen')) && userCan('delete') ? 'request-back' : ''}}" ng-click="cancel()" title="Abbrechen">В список заказов</button>
 					</div>
 					<div class="col-lg-{{(userCan('changeStatus_print') || userCan('changeStatus_lock')) && userCan('reopen') ? '4' : '5'}} text-right">
-						<button ng-show="userCan('save') && back" class="btn m-t-2 custom-btn btn-lg ion-skip-backward" ng-click="submitRequest();toTab(-1)" title="Speichern und zurück"></button>
-						<button ng-show="userCan('save')" class="btn w-lg save-btn btn-lg fa fa-floppy-o fa-5x" ng-click="submitRequest(true)" title="Speichern und auf Seite bleiben"></button>
-						<button ng-show="userCan('save') && next"  class="btn m-t-2 custom-btn btn-lg ion-skip-forward" ng-click="submitRequest();toTab(1)" title="Speichern und weiter"></button>
+						<button ng-show="userCan('save') && back" class="btn m-t-2 custom-btn btn-lg ion-skip-backward" ng-click="submitRequest();toTab(-1)" title="Сохранить и перейти на предыдущую вкладку "></button>
+						<button ng-show="userCan('save')" class="btn w-lg save-btn btn-lg fa fa-floppy-o fa-5x" ng-click="submitRequest(true)" title="Сохранить и остаться"></button>
+						<button ng-show="userCan('save') && next"  class="btn m-t-2 custom-btn btn-lg ion-skip-forward" ng-click="submitRequest();toTab(1)" title="Сохранить и перейти на следующую вкладку"></button>
          </div>  
 				</div>
         </ng-form> 
