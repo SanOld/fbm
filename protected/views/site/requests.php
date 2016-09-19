@@ -7,7 +7,7 @@ $this->breadcrumbs = array('Anträge');
 
 <div ng-controller="RequestController" class="wraper container-fluid"  ng-cloak>
   <div class="row">
-    <div class="container center-block">
+    <div class="container-fluid center-block">
       <div spi-hint-main header="_hint.header.title" text="_hint.header.text"></div>
       <div class="panel panel-default">        
         <div class="panel-heading clearfix">
@@ -153,8 +153,26 @@ $this->breadcrumbs = array('Anträge');
                 </button>
               </div>
           </div>
+
           <div class="row">
-            <div class="col-lg-12">
+
+
+            <div class="col-lg-2">
+              <div class="panel panel-default">
+                <div class="panel-heading-small">
+                  Panel heading without title
+                </div>
+                <div class="panel-body-small">
+                  <div ui-tree>
+                    <ol ui-tree-nodes="" ng-model="data" id="tree-root">
+                      <li ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-10">
 
               <table id="datatable" ng-cloak ng-table="tableParams" class="table dataTable table-hover table-bordered table-edit table-requests">
                 <tr ng-repeat="row in $data" ng-class="row.status_code == 'in_progress' && (user.type == 's' || user.type == 'd' || user.type == 'g') ?
@@ -547,6 +565,57 @@ $this->breadcrumbs = array('Anträge');
       </div>
     </div>
   </div>
+</script>
+    <script type="text/ng-template" id="aside.html">
+        <div class="modal-header">
+            <h3 class="modal-title">ngAside</h3>
+        </div>
+        <div class="modal-body">
+            <div ui-tree>
+              <ol ui-tree-nodes="" ng-model="data" id="tree-root">
+                <li ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+              </ol>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok($event)">OK</button>
+            <button class="btn btn-warning" ng-click="cancel($event)">Cancel</button>
+        </div>
+  </script>
+    <script type="text/ng-template" id="nodes_renderer2.html">
+  <div ui-tree-handle class="tree-node tree-node-content">
+    <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)"><span
+        class="glyphicon"
+        ng-class="{
+          'glyphicon glyphicon-plus': collapsed,
+          'glyphicon glyphicon-minus': !collapsed
+        }"></span></a>
+    {{node.title}}
+    <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="remove(this)"><span
+        class="glyphicon glyphicon-remove"></span></a>
+    <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="newSubItem(this)" style="margin-right: 8px;"><span
+        class="glyphicon glyphicon-plus"></span></a>
+  </div>
+  <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+    </li>
+  </ol>
+</script>
+
+  <script type="text/ng-template" id="nodes_renderer.html">
+  <div ui-tree-handle class="tree-node tree-node-content">
+    <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)"><span
+        class="glyphicon"
+        ng-class="{
+          'glyphicon glyphicon-plus': collapsed,
+          'glyphicon glyphicon-minus': !collapsed
+        }"></span></a>
+    {{node.title}}
+  </div>
+  <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
+    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+    </li>
+  </ol>
 </script>
 
 <script type="text/ng-template" id="showTemplate.html">

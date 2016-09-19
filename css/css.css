@@ -3498,3 +3498,11 @@ tr.virtual-row {
 .table-requests [data-title-text="Betrag"] {
     width: 80px;
 }
+
+.panel-heading-small{
+  background-color: #ddd;
+}
+.panel-body-small {
+	border: 1;
+	padding: 20px 30px 0;
+}

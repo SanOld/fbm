@@ -1,7 +1,95 @@
-spi.controller('RequestController', function ($scope, $rootScope, network, GridService, Utils, SweetAlert, $uibModal, configs, localStorageService) {
+spi.controller('RequestController', function ($scope, $rootScope, network, GridService, Utils, SweetAlert, $uibModal, configs, localStorageService, $aside) {
   if (!$rootScope._m) {
     $rootScope._m = 'request';
   }
+      $scope.data = [{
+        'id': 1,
+        'title': 'node1',
+        'nodes': [
+          {
+            'id': 11,
+            'title': 'node1.1',
+            'nodes': [
+              {
+                'id': 111,
+                'title': 'node1.1.1',
+                'nodes': []
+              }
+            ]
+          },
+          {
+            'id': 12,
+            'title': 'node1.2',
+            'nodes': []
+          }
+        ]
+      }, {
+        'id': 2,
+        'title': 'node2',
+        'nodrop': true, // An arbitrary property to check in custom template for nodrop-enabled
+        'nodes': [
+          {
+            'id': 21,
+            'title': 'node2.1',
+            'nodes': []
+          },
+          {
+            'id': 22,
+            'title': 'node2.2',
+            'nodes': []
+          }
+        ]
+      }, {
+        'id': 3,
+        'title': 'node3',
+        'nodes': [
+          {
+            'id': 31,
+            'title': 'node3.1',
+            'nodes': []
+          }
+        ]
+      }];
+
+    //========================================================
+      $scope.asideState = {
+      open: false
+    };
+
+    $scope.openAside = function(position, backdrop) {
+      $scope.asideState = {
+        open: true,
+        position: position
+      };
+
+      function postClose() {
+        $scope.asideState.open = false;
+      }
+
+      $aside.open({
+        templateUrl: 'aside.html',
+        placement: position,
+        size: 'sm',
+        backdrop: backdrop,
+        controller: function($scope, $uibModalInstance) {
+          $scope.ok = function(e) {
+            $uibModalInstance.close();
+            e.stopPropagation();
+          };
+          $scope.cancel = function(e) {
+            $uibModalInstance.dismiss();
+            e.stopPropagation();
+          };
+        }
+      }).result.then(postClose, postClose);
+    }
+
+
+
+
+
+
+
   $rootScope.printed = 0;
   var d = new Date;
   var year = d.getFullYear() + 1;

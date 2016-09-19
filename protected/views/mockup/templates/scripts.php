@@ -36,3 +36,5 @@
 
         <!--form validation init-->
         <script src="js/assets/summernote/summernote.min.js"></script>
+
+        <script type="text/javascript" src="js/assets/angular-ui-tree-master/dist/angular-ui-tree.js"></script>

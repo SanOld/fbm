@@ -49,3 +49,6 @@
 		  <script src="js/html5shiv.js"></script>
 		  <script src="js/respond.min.js"></script>
 		<![endif]-->
+
+
+    <link href="js/assets/angular-ui-tree-master/dist/angular-ui-tree.css" rel="stylesheet" />
