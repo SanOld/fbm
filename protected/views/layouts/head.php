@@ -60,6 +60,8 @@
 
 <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/assets/angular-ui-tree-master/dist/angular-ui-tree.css" rel="stylesheet" />
 <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/assets/angular-aside-master/dist/css/angular-aside.css" rel="stylesheet" />
+<link href="<?php echo Yii::app()->request->baseUrl; ?>'/js/assets/ui-layout-master/src/ui-layout.css" rel="stylesheet" />
+
 <!--[if lt IE 9]>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/html5shiv.js"></script>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/respond.min.js"></script>
@@ -111,6 +113,10 @@ $cs->registerScriptFile($baseUrl . '/js/lib/accordion.js');
 
 $cs->registerScriptFile($baseUrl . '/js/assets/angular-ui-tree-master/dist/angular-ui-tree.js');
 $cs->registerScriptFile($baseUrl . '/js/assets/angular-aside-master/dist/js/angular-aside.js');
+
+$cs->registerScriptFile($baseUrl . '/js/assets/ui-layout-master/src/ui-layout.js');
+
+
 
 
 

@@ -12,7 +12,8 @@ var spi = angular.module('spi', [
     'ui.bootstrap.accordion',
     'ngCookies' ,
     'ui.tree',
-    'ngAside'
+    'ngAside',
+    'ui.layout'
 ]);
 
 spi.run(function(ngTableDefaults, $templateCache) {

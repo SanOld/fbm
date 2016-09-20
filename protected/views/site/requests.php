@@ -3,7 +3,9 @@ $this->
         pageTitle = 'Anträge | ' . Yii::app()->name;
 $this->breadcrumbs = array('Anträge');
 ?>
+
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/requests.js"></script>
+
 
 <div ng-controller="RequestController" class="wraper container-fluid"  ng-cloak>
   <div class="row">
@@ -157,7 +159,7 @@ $this->breadcrumbs = array('Anträge');
           <div class="row">
 
 
-            <div class="col-lg-2">
+            <div  ui-layout="{flow : 'column'}" >
               <div class="panel panel-default">
                 <div class="panel-heading-small">
                   Panel heading without title
@@ -172,7 +174,7 @@ $this->breadcrumbs = array('Anträge');
               </div>
             </div>
 
-            <div class="col-lg-10">
+            <div   ui-layout="{flow : 'column'}" >
 
               <table id="datatable" ng-cloak ng-table="tableParams" class="table dataTable table-hover table-bordered table-edit table-requests">
                 <tr ng-repeat="row in $data" ng-class="row.status_code == 'in_progress' && (user.type == 's' || user.type == 'd' || user.type == 'g') ?
