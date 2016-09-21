@@ -156,10 +156,9 @@ $this->breadcrumbs = array('Anträge');
               </div>
           </div>
 
-          <div class="row">
+          <div  class="flex-row">
 
-
-            <div  ui-layout="{flow : 'column'}" >
+            <div  class="col-lg-2" resizable r-directions="['right']"  r-flex="true" >
               <div class="panel panel-default">
                 <div class="panel-heading-small">
                   Panel heading without title
@@ -174,7 +173,8 @@ $this->breadcrumbs = array('Anträge');
               </div>
             </div>
 
-            <div   ui-layout="{flow : 'column'}" >
+          
+            <div  class="col-lg-10"  r-flex="true" >
 
               <table id="datatable" ng-cloak ng-table="tableParams" class="table dataTable table-hover table-bordered table-edit table-requests">
                 <tr ng-repeat="row in $data" ng-class="row.status_code == 'in_progress' && (user.type == 's' || user.type == 'd' || user.type == 'g') ?
@@ -251,7 +251,9 @@ $this->breadcrumbs = array('Anträge');
                 </div>
               </div>
             </div>
+          
           </div>
+  
           <div class="clearfix">
             <div class="notice {{status.code == 'decline' ? 'decline-div' : ''}}" ng-repeat="status in statuses | filter:{virtual: 0}">
               <span class="color-notice" ng-class="status.code+'-row'"></span>

@@ -1,4 +1,12 @@
 spi.controller('RequestController', function ($scope, $rootScope, network, GridService, Utils, SweetAlert, $uibModal, configs, localStorageService, $aside) {
+//
+//  $scope.layout = {
+//    toolbar: true,
+//    leftSidebar: false,
+//    mycontainer: false
+//  }
+
+
   if (!$rootScope._m) {
     $rootScope._m = 'request';
   }
