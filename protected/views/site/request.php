@@ -36,6 +36,12 @@ $this->breadcrumbs = array('Anträge'=>'/requests', 'Antrag {{request_code}}');
           <uib-tab class="schools-goals {{goalsStatus}}"  index="'schools-goals'" select="setTab('schools-goals')" heading="Состав заказа">
 						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-goals-data.php'); ?>
           </uib-tab>
+          <uib-tab class="schools-goals {{goalsStatus}}"  index="'payments'" select="setTab('schools-goals')" heading="Платежи">
+						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-goals-data.php'); ?>
+          </uib-tab>
+          <uib-tab class="schools-goals {{goalsStatus}}"  index="'status'" select="setTab('schools-goals')" heading="Статус заказа">
+						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-goals-data.php'); ?>
+          </uib-tab>          
 				</uib-tabset>
 				<br>
 				<div class="form-group group-btn row no-print">
@@ -141,7 +147,7 @@ $this->breadcrumbs = array('Anträge'=>'/requests', 'Antrag {{request_code}}');
 <script type="text/ng-template" id="setEndFill.html">
 	<div class="panel panel-color panel-primary">
 		<div class="panel-heading clearfix">
-			<h3 class="m-0 pull-left">Abgabedatum für den Antrag</h3>
+			<h3 class="m-0 pull-left">Дата окончания этапа</h3>
 			<button type="button" class="close" ng-click="cancel()"><i class="ion-close-round "></i></button>
 		</div>
 		<div class="panel-body text-center">
@@ -149,7 +155,10 @@ $this->breadcrumbs = array('Anträge'=>'/requests', 'Antrag {{request_code}}');
 				<ng-form>
 					<div class="holder-datepicker text-right">
 						<div class="col-lg-2 col-lg-offset-2 p-0">
-							<label>Abgabe</label>
+							<Select>Abgabe
+      <option>1
+       <option>2
+              </select>
 						</div>
 						<div class="col-lg-4 p-0">
 							<div class="input-group">
@@ -164,8 +173,8 @@ $this->breadcrumbs = array('Anträge'=>'/requests', 'Antrag {{request_code}}');
 		<div class="row p-t-10 text-center">
 			<div class="form-group group-btn m-t-20">
 				<div class="col-lg-12">
-					<button class="btn w-lg cancel-btn" ng-click="cancel()">Abbrechen</button>
-					<button class="btn w-lg custom-btn" ng-click="ok()"  ng-disabled="form.$invalid">Speichern</button>
+					<button class="btn w-lg cancel-btn" ng-click="cancel()">Отменить</button>
+					<button class="btn w-lg custom-btn" ng-click="ok()"  ng-disabled="form.$invalid">Принять</button>
 				</div>
 			</div>
 		</div>

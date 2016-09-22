@@ -1719,7 +1719,9 @@ body > .select2-container {
 	font-weight:300;
 	display:block;
 }
+
 #finance .sum,
+#project .sum,
 .finance-report .sum {
 	background: url("../images/ico-money.png") no-repeat 0 50%;
 	padding:0 0 0 50px;
@@ -1730,6 +1732,7 @@ body > .select2-container {
 .finance-report .total-sum {
 	background: url("../images/ico-money2.png") no-repeat 0 50%;
 }
+#project .rate-ico,
 #finance .rate-ico{
 	background: url("../images/ico-rate.png") no-repeat 0 50%;
 }

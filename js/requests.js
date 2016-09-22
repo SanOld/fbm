@@ -55,24 +55,40 @@ spi.controller('RequestController', function ($scope, $rootScope, network, GridS
       }]
       }]
   $scope.orders = [
-    {id:1, code:'252K-001', customer: 'Иванов И.И.', sum: '25 635.00 UAH',payed:'18 700.00 UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'unfinished',status_goal:'unfinished'},
-    {id:2, code:'252K-002', customer: 'Иванов И.И.', sum: '152 356.00 UAH',payed:'152 356.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
-    {id:3, code:'252K-003', customer: 'Иванов И.И.', sum: '14 198.00 UAH',payed:'18 700.00 UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Сидоров С.В.', can_edit: true, can_print: true, status_finance:'accepted',status_concept:'accepted',status_goal:'rejected'},
-    {id:4, code:'235K-001', customer: 'Ребров С.И.', sum: '1 550.00 UAH',payed:'0.00 UAH',debt:'1 550.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: true, can_print: true, status_finance:'rejected',status_concept:'accepted',status_goal:'rejected'},
-    {id:5, code:'124K-011', customer: 'Шевченко А.Н.', sum: '68 500.00 UAH',payed:'10 000.00 UAH',debt:'58 500.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'in_progress'},
-    {id:6, code:'368K-001', customer: 'Шевченко А.Н.', sum: '25 000.00 UAH',payed:'20 000 UAH',debt:'5 000.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Сидоров С.В.', can_edit: false, can_print: true, status_finance:'unfinished',status_concept:'rejected',status_goal:'rejected'},
-    {id:7, code:'952M-142', customer: 'Ребров С.И.', sum: '12 000.00 UAH',payed:'12 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'in_progress',status_concept:'in_progress',status_goal:'in_progress'},
-    {id:8, code:'252M-001', customer: 'Ярмоленок А.П.', sum: '320 000.00 UAH',payed:'320 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'wait', manager:'Сидоров С.В.', can_edit: false, can_print: true, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
-    {id:9, code:'236K-001', customer: 'Ярмоленок А.П.', sum: '15 630.00 UAH',payed:'15 000.00 UAH',debt:'630.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
-    {id:10, code:'862K-001', customer: 'Гармаш О.И.', sum: '95 250.00 UAH',payed:'0.00 UAH',debt:'95 250.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: false, can_print: true, status_finance:'in_progress',status_concept:'accepted',status_goal:'rejected'},
-    {id:11, code:'657C-001', customer: 'Шовковский А.А.', sum: '25 500.00 UAH',payed:'25 500.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'rejected',status_concept:'accepted',status_goal:'rejected'},
-    {id:12, code:'654C-001', customer: 'Шовковский А.А.', sum: '1 000.00 UAH',payed:'1 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: false, can_print: true, status_finance:'in_progress',status_concept:'rejected',status_goal:'rejected'},
+    {id:201, code:'252K-001', customer: 'Иванов И.И.', sum: '25 635.00 UAH',payed:'18 700.00 UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'created', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'unfinished',status_goal:'unfinished'},
+    {id:202, code:'252K-002', customer: 'Иванов И.И.', sum: '152 356.00 UAH',payed:'152 356.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:215, code:'252K-003', customer: 'Иванов И.И.', sum: '14 198.00 UAH',payed:'18 700.00 UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Сидоров С.В.', can_edit: true, can_print: true, status_finance:'accepted',status_concept:'accepted',status_goal:'rejected'},
+    {id:204, code:'235K-001', customer: 'Ребров С.И.', sum: '1 550.00 UAH',payed:'0.00 UAH',debt:'1 550.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Порошенко П.П.', can_edit: true, can_print: true, status_finance:'rejected',status_concept:'accepted',status_goal:'rejected'},
+    {id:205, code:'124K-011', customer: 'Шевченко А.Н.', sum: '68 500.00 UAH',payed:'10 000.00 UAH',debt:'58 500.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'in_progress'},
+    {id:206, code:'368K-001', customer: 'Шевченко А.Н.', sum: '25 000.00 UAH',payed:'20 000 UAH',debt:'5 000.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Гройсман Г.Г.', can_edit: false, can_print: true, status_finance:'unfinished',status_concept:'rejected',status_goal:'rejected'},
+    {id:207, code:'952M-142', customer: 'Ребров С.И.', sum: '12 000.00 UAH',payed:'12 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Яценюк Я.Я.', can_edit: false, can_print: false, status_finance:'in_progress',status_concept:'in_progress',status_goal:'in_progress'},
+    {id:208, code:'252M-001', customer: 'Ярмоленок А.П.', sum: '320 000.00 UAH',payed:'320 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'wait', manager:'Гройсман Г.Г.', can_edit: false, can_print: true, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:209, code:'236K-001', customer: 'Ярмоленок А.П.', sum: '15 630.00 UAH',payed:'15 000.00 UAH',debt:'630.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Гройсман Г.Г.', can_edit: true, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:216, code:'862K-001', customer: 'Гармаш О.И.', sum: '95 250.00 UAH',payed:'0.00 UAH',debt:'95 250.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Яценюк Я.Я.', can_edit: false, can_print: true, status_finance:'in_progress',status_concept:'accepted',status_goal:'rejected'},
+    {id:217, code:'657C-001', customer: 'Шовковский А.А.', sum: '25 500.00 UAH',payed:'25 500.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'rejected',status_concept:'accepted',status_goal:'rejected'},
+    {id:218, code:'654C-001', customer: 'Шовковский А.А.', sum: '1 000.00 UAH',payed:'1 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Порошенко П.П.', can_edit: false, can_print: true, status_finance:'in_progress',status_concept:'rejected',status_goal:'rejected'},
   ]
   $scope.customers = [
     {short_name:'Иванов И.И.',id:'1'},
     {short_name:'Ребров С.И.',id:'2'},
     {short_name:'Шевченко А.Н.',id:'3'},
     {short_name:'Ярмоленок А.П.',id:'4'},
+  ]
+
+  $scope.managers = [
+    {short_name:'Сидоров С.В.',id:'1'},
+    {short_name:'Порошенко П.П.',id:'2'},
+    {short_name:'Гройсман Г.Г.',id:'3'},
+    {short_name:'Яценюк Я.Я.',id:'4'},
+  ]
+
+  $scope.statuses = [
+    {code:'in_progress',name:'в работе'},
+    {code:'accept',name:'утвержден'},
+    {code:'acceptable',name:'завершен'},
+    {code:'wait',name:'отложен'},
+    {code:'deactivate',name:'отменен'},
+    {code:'created',name:'создан'}
   ]
 
     //========================================================
@@ -227,30 +243,34 @@ spi.controller('RequestController', function ($scope, $rootScope, network, GridS
  };
  $scope.getYears();
 
-  network.get('request_status', {}, function (result, response) {
-    if (result) {
-      $scope.statuses = response.result;
-      for(var i = 0; i < $scope.statuses.length; i++){
-        if($scope.statuses[i].code == 'in_progress' ){
-          $scope.statuses[i].name = 'Создан';
-        }else if($scope.statuses[i].code == 'acceptable' ){
-          $scope.statuses[i].name = 'В работе';
-        }else if($scope.statuses[i].code == 'acceptable'){
-          $scope.statuses[i].name = 'Подготовлен';
-        }else if($scope.statuses[i].code == 'accept' ){
-          $scope.statuses[i].name = 'В производстве';
-        }else if($scope.statuses[i].code == 'wait' ){
-          $scope.statuses[i].name = 'Требует исправления';
-        };
-      };
-      $scope.statuses.push($scope.statuses[2]);  //change order of icons to not to do changes to all pages
-      delete $scope.statuses[2];
-      if($scope.userType == 's' || $scope.userType == 'd' || $scope.userType == 'g'){
-        delete $scope.statuses[3];
-      };
-      $scope.status_finance = 'r';
-    }
-  });
+//  network.get('request_status', {}, function (result, response) {
+//    if (result) {
+//      $scope.statuses = response.result;
+//      for(var i = 0; i < $scope.statuses.length; i++){
+//        if($scope.statuses[i].code == 'in_progress' ){
+//          $scope.statuses[i].name = 'Создан';
+//        }else if($scope.statuses[i].code == 'acceptable' ){
+//          $scope.statuses[i].name = 'В работе';
+//        }else if($scope.statuses[i].code == 'acceptable'){
+//          $scope.statuses[i].name = 'Подготовлен';
+//        }else if($scope.statuses[i].code == 'accept' ){
+//          $scope.statuses[i].name = 'В производстве';
+//        }else if($scope.statuses[i].code == 'wait' ){
+//          $scope.statuses[i].name = 'Требует исправления';
+//        }else if($scope.statuses[i].name == 'deaktiviert' ){
+//          $scope.statuses[i].name = 'Отменен';
+//        }else if($scope.statuses[i].name == 'Antrag initial ausfüllen' ){
+//          $scope.statuses[i].name = 'Принят';
+//        };
+//      };
+//      $scope.statuses.push($scope.statuses[2]);  //change order of icons to not to do changes to all pages
+//      delete $scope.statuses[2];
+//      if($scope.userType == 's' || $scope.userType == 'd' || $scope.userType == 'g'){
+//        delete $scope.statuses[3];
+//      };
+//      $scope.status_finance = 'r';
+//    }
+//  });
 
   var grid = GridService();
   $scope.tableParams = grid($scope.orders,$scope.filter);

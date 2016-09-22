@@ -15,7 +15,7 @@ $this->breadcrumbs = array('Заказы');
         <div class="panel-heading clearfix">
           <h1 class="panel-title col-lg-6">Заказы</h1>
           <div class="pull-right heading-box-print">
-            <a href="javascript:window.print()" title="Drucken">
+            <a href="javascript:window.print()" title="Печать">
               Печать <i class="ion-printer"></i>
             </a>
             <button class="custom-btn btn w-xs" export-to-csv ng-click="">csv Экспорт</button>
@@ -39,16 +39,8 @@ $this->breadcrumbs = array('Заказы');
                     </ui-select-choices>
                   </ui-select>
                 </div>  
-                <div class="form-group" ng-show="user.type  == 't'">  
-                  <label>Schule</label>  
-                  <ui-select ng-change="updateGrid()" ng-model="filter.school_id">
-                    <ui-select-match allow-clear="true" placeholder="Schule eingegeben">{{$select.selected.name}}</ui-select-match>
-                    <ui-select-choices repeat="item.id as item in schools | filter: $select.search | orderBy: 'code'">
-                      <span ng-bind="item.name"></span>
-                    </ui-select-choices>
-                  </ui-select>
                 </div>
-              </div>
+         
               <div class="col-lg-2">
                 <div class="form-group">
                   <div class="form-group">
@@ -64,18 +56,16 @@ $this->breadcrumbs = array('Заказы');
                 </div>
               </div>
               <div class="col-lg-1 custom-lg-1">
-                <div class="form-group">
-                  <div class="form-group">
-                    <label>Тип заказа</label>
-                    <ui-select ng-change="updateGrid()" ng-model="filter.project_type_id">
-                      <ui-select-match allow-clear="true" placeholder="Просмотр всех">{{$select.selected.name}}</ui-select-match>
-                      <ui-select-choices repeat="item.id as item in projectTypes | filter: $select.search | orderBy: 'name'">
-                        <span ng-bind="item.name"></span>
-                      </ui-select-choices>
-                    </ui-select>
-                  </div>
+                <div class="form-group" ng-hide="user.type  == 't'">
+                  <label>Менеджер</label>
+                  <ui-select ng-change="updateGrid()" ng-model="filter.manager">
+                    <ui-select-match allow-clear="true" placeholder="Просмотр всех">{{$select.selected.short_name}}</ui-select-match>
+                    <ui-select-choices repeat="item.short_name as item in managers | filter: $select.search">
+                      <span ng-bind="item.short_name"></span>
+                    </ui-select-choices>
+                  </ui-select>
                 </div>
-              </div>
+                </div>
               <div class="col-lg-1 custom-lg-1">
                 <div class="form-group">
                   <div class="form-group">
@@ -105,10 +95,10 @@ $this->breadcrumbs = array('Заказы');
               <div class="col-lg-1 custom-lg-1">
                 <div class="form-group">
                   <div class="form-group">
-                    <label>Статус</label>
-                    <ui-select ng-change="updateGrid()" ng-model="filter.status_id">
+                    <label>Состояние</label>
+                    <ui-select ng-change="updateGrid()" ng-model="filter.status_code">
                       <ui-select-match allow-clear="true" placeholder="Просмотр всех">{{$select.selected.name}}</ui-select-match>
-                      <ui-select-choices repeat="item.id as item in statuses | filter: $select.search | orderBy: 'name'">
+                      <ui-select-choices repeat="item.code as item in statuses | filter: $select.search | orderBy: 'name'">
                         <span ng-bind="item.name"></span>
                       </ui-select-choices>
                     </ui-select>
@@ -145,7 +135,7 @@ $this->breadcrumbs = array('Заказы');
             <div  class="col-lg-10"  r-flex="true" >
 
               <table id="datatable" ng-cloak ng-table="tableParams" class="table dataTable table-hover table-bordered table-edit table-requests">
-                <tr ng-repeat="row in $data | filter: {code:filter.code, customer:filter.customer} " ng-class="row.status_code == 'in_progress' && (user.type == 's' || user.type == 'd' || user.type == 'g') ?
+                <tr ng-repeat="row in $data | filter: {code:filter.code, customer:filter.customer, manager:filter.manager, status_code:filter.status_code} " ng-class="row.status_code == 'in_progress' && (user.type == 's' || user.type == 'd' || user.type == 'g') ?
                                                        'wait-row' : row.status_code + '-row'">
                   <td header="'headerCheckbox.html'">
                     <label class="cr-styled">
@@ -166,38 +156,39 @@ $this->breadcrumbs = array('Заказы');
                   <td data-title="'Дата заказа'" sortable="'year'">{{row.date | date : 'dd.MM.yyyy'}}</td>
                   <td data-title="'Дата сдачи'" sortable="'end_fill'">{{row.end_date | date : 'dd.MM.yyyy'}}</td>
                   <td data-title="'Состояние'" sortable="'status_name'">
-                      {{(row.status_code == 'in_progress' )                       ? 'Принят'              : 
-                        (row.status_code == 'acceptable'  ) ? 'В работе'              :
-                        (row.status_code == 'acceptable' )                       ? 'Подготовлен' :
-                        (row.status_code == 'accept'      )                       ? 'В производстве' :
-                        (row.status_code == 'wait'       ) ? 'Требует корректировки' :
-                         'В работе'}}
+                      {{(row.status_code == 'in_progress' )                       ? 'В работе'              :
+                        (row.status_code == 'accept'  )                           ? 'Утвержден'              :
+                        (row.status_code == 'acceptable' )                        ? 'Завершен' :
+                        (row.status_code == 'deactivate'      )                   ? 'Отменен' :
+                        (row.status_code == 'wait'       )                        ? 'Отложен' :
+                        (row.status_code == 'created'       )                     ? 'Создан' :
+                         ''}}
                   </td>
                   <td data-title="'Состояние частей'">
                     <div class="col-lg-4 p-0">
-                      <a class="request-button edit-btn" href="/request/{{row.id}}#finance-plan" title="Finanzplan">
+                      <a class="request-button edit-btn" href="/request/{{row.id}}#finance-plan" title="Финансы">
                         <span class="cell-finplan status-icon" ng-class="row.status_finance"></span>
                       </a>
                     </div>
                     <div class="col-lg-4 p-0">
-                      <a class="request-button edit-btn" href="/request/{{row.id}}#school-concepts" title="Konzept">
+                      <a class="request-button edit-btn" href="/request/{{row.id}}#school-concepts" title="Производство">
                         <span class="cell-concept status-icon" ng-class="row.status_concept"></span>
                       </a>
                     </div>
                     <div  class="col-lg-4 p-0">
-                      <a class="request-button edit-btn" href="/request/{{row.id}}#schools-goals" title="Entwicklungsziele">
+                      <a class="request-button edit-btn" href="/request/{{row.id}}#schools-goals" title="Установка">
                         <span class="cell-school status-icon" ng-class="row.status_goal"></span>
                       </a>
                     </div>
                   </td>
                   
-                  <td data-title="'Менеджер'" sortable="'last_change'">{{row.manager}}</td>
+                  <td data-title="'Менеджер'" sortable="'manager'">{{row.manager}}</td>
                   <td data-title="" ng-click="setFilter()">
                     <a ng-click="printDocuments(row)"  ng-class=" {disabled: !row.can_print } " class="btn document" href="" title="Печать"><i class="ion-printer"></i></a>
-                    <a ng-if="row.can_edit" class="btn edit-btn" href="/request/{{row.id}}"  title="Bearbeiten">
+                    <a ng-if="row.can_edit" class="btn edit-btn" href="/request/{{row.id}}"  title="Редактирование данных заказа">
                       <i class="ion-edit"></i>
                     </a>
-                    <a ng-if="!row.can_edit" class="btn edit-btn"  href="/request/{{row.id}}" title="Aussicht">
+                    <a ng-if="!row.can_edit" class="btn edit-btn"  href="/request/{{row.id}}" title="Просмотр данных заказа">
                       <i class="ion-eye"></i>
                     </a>
                   </td>
