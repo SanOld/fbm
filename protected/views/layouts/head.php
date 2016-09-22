@@ -61,6 +61,7 @@
 <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/assets/angular-ui-tree-master/dist/angular-ui-tree.css" rel="stylesheet" />
 <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/assets/angular-aside-master/dist/css/angular-aside.css" rel="stylesheet" />
 <link href="<?php echo Yii::app()->request->baseUrl; ?>/js/assets/angular-resizable-master/src/angular-resizable.css" rel="stylesheet" />
+<link href="<?php echo Yii::app()->request->baseUrl; ?>/js/assets/angular-bootstrap-nav-tree-master/dist/abn_tree.css" rel="stylesheet" />
 
 <!--[if lt IE 9]>
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/html5shiv.js"></script>
@@ -115,6 +116,7 @@ $cs->registerScriptFile($baseUrl . '/js/assets/angular-ui-tree-master/dist/angul
 $cs->registerScriptFile($baseUrl . '/js/assets/angular-aside-master/dist/js/angular-aside.js');
 
 $cs->registerScriptFile($baseUrl . '/js/assets/angular-resizable-master/src/angular-resizable.js');
+$cs->registerScriptFile($baseUrl . '/js/assets/angular-bootstrap-nav-tree-master/dist/abn_tree_directive.js');
 
 
 

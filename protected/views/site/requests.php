@@ -127,6 +127,16 @@ $this->breadcrumbs = array('Заказы');
                       <li ng-repeat="node in tree" ui-tree-node ng-include="'nodes_renderer.html'"></li>
                     </ol>
                   </div>
+                  <abn-tree
+                      tree-data         = "my_treedata"
+                      tree-control      = "my_tree"
+                      icon-leaf         = "icon-file"
+                      icon-expand       = "glyphicon glyphicon-folder-close"
+                      icon-collapse     = "glyphicon glyphicon-folder-open"
+                      on-select         = "my_tree_handler(branch)"
+                      expand-level      = "2"
+                      initial-selection = "Vegetable">
+                  ></abn-tree>
                 </div>
               </div>
             </div>

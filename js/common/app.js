@@ -13,7 +13,8 @@ var spi = angular.module('spi', [
     'ngCookies' ,
     'ui.tree',
     'ngAside',
-    'angularResizable'
+    'angularResizable',
+    'angularBootstrapNavTree'
 ]);
 
 spi.run(function(ngTableDefaults, $templateCache) {

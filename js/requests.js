@@ -54,6 +54,25 @@ spi.controller('RequestController', function ($scope, $rootScope, network, GridS
           }]
       }]
       }]
+  $scope.my_treedata = [{
+    label: 'Languages',
+    children: [
+      {label: 'Languages1',
+              children: [
+                        'Jade'
+                        ,'Less'
+                        ,'Coffeescript'
+      ]}
+,     {label: 'Languages2',
+              children: [
+                        'Jade1'
+                        ,'Less1'
+                        ,'Coffeescript1'
+      ]}
+      ,'Less3'
+      ,'Coffeescript3'
+    ]
+  }]
   $scope.orders = [
     {id:201, code:'252K-001', customer: 'Иванов И.И.', sum: '25 635.00 UAH',payed:'18 700.00 UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'created', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'unfinished',status_goal:'unfinished'},
     {id:202, code:'252K-002', customer: 'Иванов И.И.', sum: '152 356.00 UAH',payed:'152 356.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
