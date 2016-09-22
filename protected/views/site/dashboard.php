@@ -1,7 +1,7 @@
 <?php
 /* @var $this SiteController */
 
-$this->pageTitle = 'Startseite | ' . Yii::app()->name;
+$this->pageTitle = 'Главная | ' . Yii::app()->name;
 
 ?>
 

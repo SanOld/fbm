@@ -1156,6 +1156,7 @@ table.dataTable thead > tr > th.sorting_disabled {
 .btn.edit-btn,
 .btn.document,
 .request-button,
+.folder-button
 .summary-user .requsted-btn {
 	background: #fff;
 	border: 1px solid #3796e8;
@@ -3499,8 +3500,10 @@ tr.virtual-row {
     width: 80px;
 }
 
-.panel-heading-small{
-  background-color: #ddd;
+.panel-heading-small {
+	font-style:normal;
+  font-weight: 600;
+	font-size:15px;
 }
 .panel-body-small {
 	border: 1;

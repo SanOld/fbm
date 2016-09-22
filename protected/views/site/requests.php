@@ -1,7 +1,7 @@
 <?php
 $this->
-        pageTitle = 'Anträge | ' . Yii::app()->name;
-$this->breadcrumbs = array('Anträge');
+        pageTitle = 'Заказы | ' . Yii::app()->name;
+$this->breadcrumbs = array('Заказы');
 ?>
 
 <script src="<?php echo Yii::app()->request->baseUrl; ?>/js/requests.js"></script>
@@ -16,7 +16,7 @@ $this->breadcrumbs = array('Anträge');
           <h1 class="panel-title col-lg-6">Заказы</h1>
           <div class="pull-right heading-box-print">
             <a href="javascript:window.print()" title="Drucken">
-              Drucken <i class="ion-printer"></i>
+              Печать <i class="ion-printer"></i>
             </a>
             <button class="custom-btn btn w-xs" export-to-csv ng-click="">csv Экспорт</button>
             <button <?php $this->demo();?> ng-if="canByType(['a'])" ng-click="addRequest()" class="btn w-lg custom-btn" data-modal="">Создать заказ</button>
@@ -24,13 +24,17 @@ $this->breadcrumbs = array('Anträge');
         </div>
         <div class="panel-body request-edit">
           <div class="row datafilter">
+            <div class="col-lg-2">
+
+            </div>
+            <div class="col-lg-10">
             <form>
               <div class="col-lg-2">
                 <div class="form-group" ng-hide="user.type  == 't'">
                   <label>Клиент</label>
-                  <ui-select ng-change="updateGrid()" ng-model="filter.performer_id">
-                    <ui-select-match allow-clear="true" placeholder="Alles anzeigen">{{$select.selected.short_name}}</ui-select-match>
-                    <ui-select-choices repeat="item.id as item in performers | filter: $select.search">
+                  <ui-select ng-change="updateGrid()" ng-model="filter.customer">
+                    <ui-select-match allow-clear="true" placeholder="Просмотр всех">{{$select.selected.short_name}}</ui-select-match>
+                    <ui-select-choices repeat="item.short_name as item in customers | filter: $select.search">
                       <span ng-bind="item.short_name"></span>
                     </ui-select-choices>
                   </ui-select>
@@ -51,7 +55,7 @@ $this->breadcrumbs = array('Anträge');
                     <label>Поиск по коду</label>
                     <input ng-change="updateGrid()" type="search" ng-model="filter.code" class="form-control popup-input" placeholder="Kennziffer eingegeben" ng-hide="user.type  == 't'">
                     <ui-select ng-change="updateGrid()" ng-model="filter.code">
-                      <ui-select-match allow-clear="true" placeholder="Kennziffer eingegeben">{{$select.selected.code}}</ui-select-match>
+                      <ui-select-match allow-clear="true" placeholder="Введите номер заказа">{{$select.selected.code}}</ui-select-match>
                       <ui-select-choices repeat="item.code as item in requests | filter: $select.search | orderBy: 'code'">
                         <span ng-bind="item.code"></span>
                       </ui-select-choices>
@@ -64,7 +68,7 @@ $this->breadcrumbs = array('Anträge');
                   <div class="form-group">
                     <label>Тип заказа</label>
                     <ui-select ng-change="updateGrid()" ng-model="filter.project_type_id">
-                      <ui-select-match allow-clear="true" placeholder="Alles anzeigen">{{$select.selected.name}}</ui-select-match>
+                      <ui-select-match allow-clear="true" placeholder="Просмотр всех">{{$select.selected.name}}</ui-select-match>
                       <ui-select-choices repeat="item.id as item in projectTypes | filter: $select.search | orderBy: 'name'">
                         <span ng-bind="item.name"></span>
                       </ui-select-choices>
@@ -77,7 +81,7 @@ $this->breadcrumbs = array('Anträge');
                   <div class="form-group">
                     <label>Изделие</label>
                     <ui-select ng-change="updateGrid()" ng-model="filter.school_type_id">
-                      <ui-select-match allow-clear="true" placeholder="Alles anzeigen">{{$select.selected.name}}</ui-select-match>
+                      <ui-select-match allow-clear="true" placeholder="Просмотр всех">{{$select.selected.name}}</ui-select-match>
                       <ui-select-choices repeat="item.id as item in schoolTypes | filter: $select.search | orderBy: 'name'">
                         <span ng-bind="item.full_name"></span>
                       </ui-select-choices>
@@ -103,7 +107,7 @@ $this->breadcrumbs = array('Anträge');
                   <div class="form-group">
                     <label>Статус</label>
                     <ui-select ng-change="updateGrid()" ng-model="filter.status_id">
-                      <ui-select-match allow-clear="true" placeholder="Alles anzeigen">{{$select.selected.name}}</ui-select-match>
+                      <ui-select-match allow-clear="true" placeholder="Просмотр всех">{{$select.selected.name}}</ui-select-match>
                       <ui-select-choices repeat="item.id as item in statuses | filter: $select.search | orderBy: 'name'">
                         <span ng-bind="item.name"></span>
                       </ui-select-choices>
@@ -117,56 +121,20 @@ $this->breadcrumbs = array('Anträge');
                 </button>
               </div>
             </form>
-          </div>            
-          <div class="row m-t-10 m-b-10">
-            <div class="col-lg-12">
-              <span>Состояние фильтров</span>
-            </div>                  
-          </div>
-          <div class="custom-checkbox row m-b-10">              
-            <div class="col-lg-8">
-              <div class="col-lg-2" ng-repeat="item in part_statuses">
-                <span title="Finanzplan"  ng-show="user.type != 'd'">
-                    <input  type="checkbox" name="name_{{item}}+ 'finance'" ng-model="checks[item]['finance']" 
-                           ng-change="deleteStatus(item + '_finance', checks[item]['finance']);updateGrid();" id="{{item}}_finance">
-                    <label  class="cell-finplan {{item}} status-icon" for='{{item}}_finance'><i class="fa fa-check-circle bg-color"></i></label>
-                </span>
-                <span title="Konzept">
-                    <input type="checkbox" name="name_{{item}}+ '_concept'" ng-model="checks[item]['concept']" 
-                           ng-change="deleteStatus(item + '_concept', checks[item]['concept']);updateGrid();" id="{{item}}_concept">
-                    <label class="cell-concept {{item}} status-icon" for='{{item}}_concept'><i class="fa fa-check-circle bg-color"></i></label>
-                </span>
-                <span title="Entwicklungsziele">
-                  <input type="checkbox" name="name_{{item}}+ '_goal'" ng-model="checks[item]['goal']" 
-                           ng-change="deleteStatus(item + '_goal', checks[item]['goal']);updateGrid();" id="{{item}}_goal">
-                  <label class="cell-school {{item}} status-icon" for='{{item}}_goal'><i class="fa fa-check-circle "></i></label>
-                </span>
-              </div>
             </div>
-            <div class="col-lg-2 p-r-0">
-                <button class="btn pull-right w-lg custom-reset" ng-click="allSelect(true)">
-                  <i class="fa fa-check-circle"></i></i>
-                  <span>Выбрать все</span>
-                </button>
-              </div>
-               <div class="col-lg-2 p-l-0">
-                <button class="btn pull-right w-lg custom-reset" ng-click="allSelect(false)"> <i class="fa ion-close-circled "></i>
-                  <span>Сбросить</span>
-                </button>
-              </div>
-          </div>
+          </div>            
 
           <div  class="flex-row">
 
             <div  class="col-lg-2" resizable r-directions="['right']"  r-flex="true" >
               <div class="panel panel-default">
                 <div class="panel-heading-small">
-                  Panel heading without title
+                  Группы заказов
                 </div>
                 <div class="panel-body-small">
                   <div ui-tree>
-                    <ol ui-tree-nodes="" ng-model="data" id="tree-root">
-                      <li ng-repeat="node in data" ui-tree-node ng-include="'nodes_renderer.html'"></li>
+                    <ol ui-tree-nodes="" ng-model="tree" id="tree-root">
+                      <li ng-repeat="node in tree" ui-tree-node ng-include="'nodes_renderer.html'"></li>
                     </ol>
                   </div>
                 </div>
@@ -177,7 +145,7 @@ $this->breadcrumbs = array('Anträge');
             <div  class="col-lg-10"  r-flex="true" >
 
               <table id="datatable" ng-cloak ng-table="tableParams" class="table dataTable table-hover table-bordered table-edit table-requests">
-                <tr ng-repeat="row in $data" ng-class="row.status_code == 'in_progress' && (user.type == 's' || user.type == 'd' || user.type == 'g') ?
+                <tr ng-repeat="row in $data | filter: {code:filter.code, customer:filter.customer} " ng-class="row.status_code == 'in_progress' && (user.type == 's' || user.type == 'd' || user.type == 'g') ?
                                                        'wait-row' : row.status_code + '-row'">
                   <td header="'headerCheckbox.html'">
                     <label class="cr-styled">
@@ -185,18 +153,19 @@ $this->breadcrumbs = array('Anträge');
                       <i class="fa"></i>
                     </label>
                   </td>
-                  <td data-title="'Код'" sortable="'code'">{{row.code}}</td>
-                  <td data-title="user.type != 't' ? 'Клиент' : 'Schule(n)'" sortable="user.type != 't' ? 'performer_name' : 'school_name'">
+                  <td data-title="'Номер'" sortable="'code'">{{row.code}}</td>
+                  <td data-title="'Клиент'" sortable="user.type != 't' ? 'performer_name' : 'school_name'">
                     <!--<span class="performer-icon" ng-class="{'unchecked':row.performer_is_checked != '1'}">{{row.performer_name}}</span>-->
                    <div class="holder-school">
-                    <a ng-if="user.type != 't'" href="/performers#id={{row.performer_id}}" target="_blank">{{row.performer_name}}</a>
-                    <i ng-if="user.type != 't' && +row.performer_is_checked" class="success fa fa-check-circle" aria-hidden="true"></i>
-                    <a ng-if="user.type == 't'" href="/schools#id={{school.id}}" ng-repeat="school in row.schools" class="school-td" target="_blank">{{school.name}}</a>
+                    <a  href="" target="_blank">{{row.customer}}</a>
                    </div>
                   </td>
-                  <td data-title="'Прграмма'" sortable="'programm'">{{row.programm}}</td>
-                  <td data-title="'Год'" sortable="'year'">{{row.year}}</td>
-                  <td data-title="'Статус'" sortable="'status_name'">
+                  <td data-title="'Сумма'" sortable="'programm'">{{row.sum}}</td>
+                  <td data-title="'Оплата'" sortable="'programm'">{{row.payed}}</td>
+                  <td data-title="'Задолженность'" sortable="'programm'">{{row.debt}}</td>
+                  <td data-title="'Дата заказа'" sortable="'year'">{{row.date | date : 'dd.MM.yyyy'}}</td>
+                  <td data-title="'Дата сдачи'" sortable="'end_fill'">{{row.end_date | date : 'dd.MM.yyyy'}}</td>
+                  <td data-title="'Состояние'" sortable="'status_name'">
                       {{(row.status_code == 'in_progress' )                       ? 'Принят'              : 
                         (row.status_code == 'acceptable'  ) ? 'В работе'              :
                         (row.status_code == 'acceptable' )                       ? 'Подготовлен' :
@@ -206,7 +175,7 @@ $this->breadcrumbs = array('Anträge');
                   </td>
                   <td data-title="'Состояние частей'">
                     <div class="col-lg-4 p-0">
-                      <a ng-if="isFinansist || (row.is_bonus_project == '1' && user.type == 's')" class="request-button edit-btn" href="/request/{{row.id}}#finance-plan" title="Finanzplan">
+                      <a class="request-button edit-btn" href="/request/{{row.id}}#finance-plan" title="Finanzplan">
                         <span class="cell-finplan status-icon" ng-class="row.status_finance"></span>
                       </a>
                     </div>
@@ -221,19 +190,19 @@ $this->breadcrumbs = array('Anträge');
                       </a>
                     </div>
                   </td>
-                  <td data-title="'Дата сдачи'" sortable="'end_fill'">{{getDate(row.end_fill) | date : 'dd.MM.yyyy'}}</td>
-                  <td data-title="'Посл. редактирование'" sortable="'last_change'">{{getDate(row.last_change) | date : 'dd.MM.yyyy'}}</td>
-                  <td data-title="'Печать / Редактирование'" ng-click="setFilter()">
-                    <a ng-click="printDocuments(row)"  ng-class=" {disabled: !userCan( 'btnPrintDocument', row.status_code)} " class="btn document" href="" title="Drucken"><i class="ion-printer"></i></a>
-                    <a ng-if="canEdit(row)" class="btn edit-btn" href="/request/{{row.id}}"  title="Bearbeiten">
+                  
+                  <td data-title="'Менеджер'" sortable="'last_change'">{{row.manager}}</td>
+                  <td data-title="" ng-click="setFilter()">
+                    <a ng-click="printDocuments(row)"  ng-class=" {disabled: !row.can_print } " class="btn document" href="" title="Печать"><i class="ion-printer"></i></a>
+                    <a ng-if="row.can_edit" class="btn edit-btn" href="/request/{{row.id}}"  title="Bearbeiten">
                       <i class="ion-edit"></i>
                     </a>
-                    <a ng-if="!canEdit(row)" class="btn edit-btn"  href="/request/{{row.id}}" title="Aussicht">
+                    <a ng-if="!row.can_edit" class="btn edit-btn"  href="/request/{{row.id}}" title="Aussicht">
                       <i class="ion-eye"></i>
                     </a>
                   </td>
                 </tr>
-                <tr ng-if="!$data.length"><td class="no-result" colspan="10">Keine Ergebnisse</td></tr>
+                <tr ng-if="!$data.length"><td class="no-result" colspan="10">Нет результатов</td></tr>
               </table>
 
               <div class="btn-row m-t-15 clearfix" ng-if="canEdit() && canByType(['a','p'])">
@@ -244,7 +213,7 @@ $this->breadcrumbs = array('Anträge');
                   <button class="btn m-b-5" ng-disabled="!existsSelected()" ng-click="setBulkStatus(5)">В производстве</button>
                 </div>
                 <div class="col-lg-3">
-                  <button class="btn m-b-5" ng-click="export()">Daten exportieren</button>
+                  <button class="btn m-b-5" ng-click="export()">Экспорт данных</button>
                 </div> 
                 <div class="col-lg-2">
                   <button class="btn m-b-5"  ng-disabled="!existsSelected()" ng-click="copyRequest()" disabled>Копирование заказа</button>
@@ -586,38 +555,21 @@ $this->breadcrumbs = array('Anträge');
             <button class="btn btn-warning" ng-click="cancel($event)">Cancel</button>
         </div>
   </script>
-    <script type="text/ng-template" id="nodes_renderer2.html">
-  <div ui-tree-handle class="tree-node tree-node-content">
-    <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)"><span
-        class="glyphicon"
-        ng-class="{
-          'glyphicon glyphicon-plus': collapsed,
-          'glyphicon glyphicon-minus': !collapsed
-        }"></span></a>
-    {{node.title}}
-    <a class="pull-right btn btn-danger btn-xs" data-nodrag ng-click="remove(this)"><span
-        class="glyphicon glyphicon-remove"></span></a>
-    <a class="pull-right btn btn-primary btn-xs" data-nodrag ng-click="newSubItem(this)" style="margin-right: 8px;"><span
-        class="glyphicon glyphicon-plus"></span></a>
-  </div>
-  <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
-    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
-    </li>
-  </ol>
-</script>
 
   <script type="text/ng-template" id="nodes_renderer.html">
-  <div ui-tree-handle class="tree-node tree-node-content">
-    <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)"><span
-        class="glyphicon"
-        ng-class="{
-          'glyphicon glyphicon-plus': collapsed,
-          'glyphicon glyphicon-minus': !collapsed
-        }"></span></a>
-    {{node.title}}
+  <div  class="tree-node tree-node-content">
+    <a class="btn folder-button btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)">
+      <span class="glyphicon" ng-class="{
+                                          'glyphicon glyphicon-folder-close': collapsed,
+                                          'glyphicon glyphicon-folder-open': !collapsed
+                                        }">
+      </span>
+      {{node.title}}
+    </a>
+    
   </div>
   <ol ui-tree-nodes="" ng-model="node.nodes" ng-class="{hidden: collapsed}">
-    <li ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
+    <li ng-if="node.id != undefined" ng-repeat="node in node.nodes" ui-tree-node ng-include="'nodes_renderer.html'">
     </li>
   </ol>
 </script>

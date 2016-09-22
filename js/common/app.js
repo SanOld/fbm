@@ -22,24 +22,24 @@ spi.run(function(ngTableDefaults, $templateCache) {
     $templateCache.put('ng-table/header.html', '<tr><th title="{{column.headerTitle(this)}}" ng-repeat="column in $columns" class="{{column.class(this)}}" ng-class="{\'sorting\': column.sortable(this), \'sorting_asc\': column.sortable(this) && tableParams.sorting()[column.sortable(this)]==\'asc\', \'sorting_desc\': column.sortable(this) && tableParams.sorting()[column.sortable(this)]==\'desc\'}" ng-click="column.sortable(this) && tableParams.sorting(column.sortable(this), params.sorting()[column.sortable(this)]==\'asc\' ? \'desc\' : \'asc\')" ng-if="column.show(this)" ng-init="template=column.headerTemplateURL(this)">{{column.title(this)}}<div ng-if="template" ng-include="template"></div></th></tr>');
     $templateCache.put('ng-table/pager.html',
       '<div ng-init="countModel = params.count()" class="ng-cloak wrap-paging clearfix">\n\
-        <div ng-if = "params.total() > params.count()" class="dataTables_info" id="datatable_info">Seite {{params.page()}} von {{pages.length ? pages.length - 2 : 1}} aus {{params.total()}} Einträgen</div>\n\
-        <div ng-if = "((params.total() < params.count()) && params.total() > 1)"class="dataTables_info" id="datatable_info">{{params.total()}} Einträge</div>\n\
-        <div ng-if = "(params.total() < params.count() && params.total() == 1)"class="dataTables_info" id="datatable_info">{{params.total()}} Eintrag</div>\n\
+        <div ng-if = "params.total() > params.count()" class="dataTables_info" id="datatable_info">Seite {{params.page()}} von {{pages.length ? pages.length - 2 : 1}} aus {{params.total()}} Объекты</div>\n\
+        <div ng-if = "((params.total() < params.count()) && params.total() > 1)"class="dataTables_info" id="datatable_info">{{params.total()}} Объектов</div>\n\
+        <div ng-if = "(params.total() < params.count() && params.total() == 1)"class="dataTables_info" id="datatable_info">{{params.total()}} Объект</div>\n\
         <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate"> \n\
           <ul ng-if="params.total() > params.count()" class="pagination"> \n\
             <li class="paginate_button" ng-class="{\'disabled\': !page.active && !page.current, \'active\': page.current}" ng-repeat="page in pages" ng-switch="page.type">\n\
-              <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">Zurück</a> \n\
+              <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">Назад</a> \n\
               <a ng-switch-when="first" ng-click="params.page(page.number)" href=""> <span ng-bind="page.number"></span> </a>\n\
               <a ng-switch-when="page" ng-click="params.page(page.number)" href=""> <span ng-bind="page.number"></span> </a> \n\
               <a ng-switch-when="more" ng-click="params.page(page.number)" href="">&#8230;</a> <a ng-switch-when="last" ng-click="params.page(page.number)" href=""> <span ng-bind="page.number"></span> </a>\n\
-              <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Weiter</a> \n\
+              <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Вперед</a> \n\
             </li> \n\
           </ul> \n\
         </div> \n\
         <div ng-if="params.settings().counts.length && params.total() > 10" class="dataTables_length" id="datatable_length">\n\
          <label> \n\
           <select name="datatable_length" ng-model="countModel" ng-change="params.count(countModel)" class="form-control input-sm" ng-options="count for count in params.settings().counts"> </select>\n\
-          Objekte pro Seite \n\
+          Объектов на странице \n\
         </label>\n\
         </div>\n\
       </div>');

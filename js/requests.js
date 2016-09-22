@@ -10,54 +10,70 @@ spi.controller('RequestController', function ($scope, $rootScope, network, GridS
   if (!$rootScope._m) {
     $rootScope._m = 'request';
   }
-      $scope.data = [{
-        'id': 1,
-        'title': 'node1',
+  $scope.tree = [{
+      'id': 1,
+      'title': 'Заказы',
+      'nodes': [{
+        'id': 11,
+        'title': 'Салон 1',
         'nodes': [
           {
-            'id': 11,
-            'title': 'node1.1',
+            'id': 111,
+            'title': 'Менеджеры',
             'nodes': [
               {
-                'id': 111,
-                'title': 'node1.1.1',
-                'nodes': []
-              }
-            ]
-          },
-          {
-            'id': 12,
-            'title': 'node1.2',
-            'nodes': []
-          }
-        ]
-      }, {
-        'id': 2,
-        'title': 'node2',
-        'nodrop': true, // An arbitrary property to check in custom template for nodrop-enabled
+                'id': 1111,
+                'title': 'Сидоров',
+                'nodes': ['']
+              },
+              {
+                'id': 1112,
+                'title': 'Петров',
+                'nodes': ['']
+              }]
+          }]
+      },
+    {
+        'id': 21,
+        'title': 'Салон 2',
         'nodes': [
           {
-            'id': 21,
-            'title': 'node2.1',
-            'nodes': []
-          },
-          {
-            'id': 22,
-            'title': 'node2.2',
-            'nodes': []
-          }
-        ]
-      }, {
-        'id': 3,
-        'title': 'node3',
-        'nodes': [
-          {
-            'id': 31,
-            'title': 'node3.1',
-            'nodes': []
-          }
-        ]
-      }];
+            'id': 211,
+            'title': 'Менеджеры',
+            'nodes': [
+              {
+                'id': 2111,
+                'title': 'Бондарь',
+                'nodes': ['']
+              },
+              {
+                'id': 2112,
+                'title': 'Шеховцов',
+                'nodes': ['']
+              }]
+          }]
+      }]
+      }]
+  $scope.orders = [
+    {id:1, code:'252K-001', customer: 'Иванов И.И.', sum: '25 635.00 UAH',payed:'18 700.00 UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'unfinished',status_goal:'unfinished'},
+    {id:2, code:'252K-002', customer: 'Иванов И.И.', sum: '152 356.00 UAH',payed:'152 356.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:3, code:'252K-003', customer: 'Иванов И.И.', sum: '14 198.00 UAH',payed:'18 700.00 UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Сидоров С.В.', can_edit: true, can_print: true, status_finance:'accepted',status_concept:'accepted',status_goal:'rejected'},
+    {id:4, code:'235K-001', customer: 'Ребров С.И.', sum: '1 550.00 UAH',payed:'0.00 UAH',debt:'1 550.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: true, can_print: true, status_finance:'rejected',status_concept:'accepted',status_goal:'rejected'},
+    {id:5, code:'124K-011', customer: 'Шевченко А.Н.', sum: '68 500.00 UAH',payed:'10 000.00 UAH',debt:'58 500.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'in_progress'},
+    {id:6, code:'368K-001', customer: 'Шевченко А.Н.', sum: '25 000.00 UAH',payed:'20 000 UAH',debt:'5 000.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Сидоров С.В.', can_edit: false, can_print: true, status_finance:'unfinished',status_concept:'rejected',status_goal:'rejected'},
+    {id:7, code:'952M-142', customer: 'Ребров С.И.', sum: '12 000.00 UAH',payed:'12 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'in_progress',status_concept:'in_progress',status_goal:'in_progress'},
+    {id:8, code:'252M-001', customer: 'Ярмоленок А.П.', sum: '320 000.00 UAH',payed:'320 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'wait', manager:'Сидоров С.В.', can_edit: false, can_print: true, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:9, code:'236K-001', customer: 'Ярмоленок А.П.', sum: '15 630.00 UAH',payed:'15 000.00 UAH',debt:'630.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:10, code:'862K-001', customer: 'Гармаш О.И.', sum: '95 250.00 UAH',payed:'0.00 UAH',debt:'95 250.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: false, can_print: true, status_finance:'in_progress',status_concept:'accepted',status_goal:'rejected'},
+    {id:11, code:'657C-001', customer: 'Шовковский А.А.', sum: '25 500.00 UAH',payed:'25 500.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'rejected',status_concept:'accepted',status_goal:'rejected'},
+    {id:12, code:'654C-001', customer: 'Шовковский А.А.', sum: '1 000.00 UAH',payed:'1 000.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: false, can_print: true, status_finance:'in_progress',status_concept:'rejected',status_goal:'rejected'},
+  ]
+  $scope.customers = [
+    {short_name:'Иванов И.И.',id:'1'},
+    {short_name:'Ребров С.И.',id:'2'},
+    {short_name:'Шевченко А.Н.',id:'3'},
+    {short_name:'Ярмоленок А.П.',id:'4'},
+  ]
 
     //========================================================
       $scope.asideState = {
@@ -237,7 +253,8 @@ spi.controller('RequestController', function ($scope, $rootScope, network, GridS
   });
 
   var grid = GridService();
-  $scope.tableParams = grid('request', $scope.filter);
+  $scope.tableParams = grid($scope.orders,$scope.filter);
+//  $scope.tableParams = grid('request', $scope.filter);
 
   $scope.paramsForExport = {
     fileName: 'Antragsliste.csv',      
