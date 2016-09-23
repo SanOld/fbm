@@ -11,7 +11,6 @@ var spi = angular.module('spi', [
     'summernote',
     'ui.bootstrap.accordion',
     'ngCookies' ,
-    'ui.tree',
     'ngAside',
     'angularResizable',
     'angularBootstrapNavTree'
@@ -23,7 +22,7 @@ spi.run(function(ngTableDefaults, $templateCache) {
     $templateCache.put('ng-table/header.html', '<tr><th title="{{column.headerTitle(this)}}" ng-repeat="column in $columns" class="{{column.class(this)}}" ng-class="{\'sorting\': column.sortable(this), \'sorting_asc\': column.sortable(this) && tableParams.sorting()[column.sortable(this)]==\'asc\', \'sorting_desc\': column.sortable(this) && tableParams.sorting()[column.sortable(this)]==\'desc\'}" ng-click="column.sortable(this) && tableParams.sorting(column.sortable(this), params.sorting()[column.sortable(this)]==\'asc\' ? \'desc\' : \'asc\')" ng-if="column.show(this)" ng-init="template=column.headerTemplateURL(this)">{{column.title(this)}}<div ng-if="template" ng-include="template"></div></th></tr>');
     $templateCache.put('ng-table/pager.html',
       '<div ng-init="countModel = params.count()" class="ng-cloak wrap-paging clearfix">\n\
-        <div ng-if = "params.total() > params.count()" class="dataTables_info" id="datatable_info">Seite {{params.page()}} von {{pages.length ? pages.length - 2 : 1}} aus {{params.total()}} Объекты</div>\n\
+        <div ng-if = "params.total() > params.count()" class="dataTables_info" id="datatable_info">Страница {{params.page()}} из {{pages.length ? pages.length - 2 : 1}}. Всего записей {{params.total()}}</div>\n\
         <div ng-if = "((params.total() < params.count()) && params.total() > 1)"class="dataTables_info" id="datatable_info">{{params.total()}} Объектов</div>\n\
         <div ng-if = "(params.total() < params.count() && params.total() == 1)"class="dataTables_info" id="datatable_info">{{params.total()}} Объект</div>\n\
         <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate"> \n\

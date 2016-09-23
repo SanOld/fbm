@@ -3513,6 +3513,18 @@ tr.virtual-row {
 	padding: 20px 30px 0;
 }
 
+.panel-body-image  {
+
+  height: 200px;
+
+  background: url("../images/3d-model.jpg") no-repeat ;
+  background-size: contain;
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+
+
    .flex-row {
     padding: 0;
     margin: 0;

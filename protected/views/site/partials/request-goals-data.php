@@ -1,11 +1,11 @@
 
   <div class="tab-pane" id="schools-goals" class="schools-goals" ng-controller="RequestSchoolGoalController">
-    <div id="accordion-order" class="panel-group panel-group-joined">
+    <div id="accordion-account" class="panel-group panel-group-joined">
     <form name="goalsForm" novalidate>
       <div ng-repeat="school in schoolGoals" class="panel panel-default">
         <div class="panel-heading">
           <h4 class="panel-title">
-            <a ng-if="school.school_name" data-toggle="collapse" data-parent="#accordion-order" href="#collapse_{{$index}}"  class="collapse ng-binding " ng-class="!($first && $first == $last) ? 'collapsed' : ''" aria-expanded="{{!($first && $first == $last)}}">
+            <a ng-if="school.school_name" data-toggle="collapse" data-parent="#accordion-account" href="#collapse_{{$index}}"  class="collapse ng-binding " ng-class="!($first && $first == $last) ? 'collapsed' : ''" aria-expanded="{{!($first && $first == $last)}}">
               {{school.school_name}} ({{school.school_number}})
               <span class="notice">
                 <span  class="color-notice {{school.status}}-row"></span>

@@ -1,78 +1,58 @@
 spi.controller('RequestController', function ($scope, $rootScope, network, GridService, Utils, SweetAlert, $uibModal, configs, localStorageService, $aside) {
-//
-//  $scope.layout = {
-//    toolbar: true,
-//    leftSidebar: false,
-//    mycontainer: false
-//  }
 
 
   if (!$rootScope._m) {
     $rootScope._m = 'request';
   }
-  $scope.tree = [{
-      'id': 1,
-      'title': 'Заказы',
-      'nodes': [{
-        'id': 11,
-        'title': 'Салон 1',
-        'nodes': [
+  $scope.my_treedata = [{
+      'uid': 1,
+      'label': 'Заказы',
+      'children': [{
+        'uid': 11,
+        'label': 'Салон 1',
+        'children': [
           {
-            'id': 111,
-            'title': 'Менеджеры',
-            'nodes': [
+            'uid': 111,
+            'label': 'Менеджеры',
+            'children': [
               {
-                'id': 1111,
-                'title': 'Сидоров',
-                'nodes': ['']
+                'uid': 1111,
+                'label': 'Сидоров',
+                  iconLeaf: true
               },
               {
-                'id': 1112,
-                'title': 'Петров',
-                'nodes': ['']
+                'uid': 1112,
+                'label': 'Петров',
+                iconLeaf: true
               }]
           }]
       },
     {
-        'id': 21,
-        'title': 'Салон 2',
-        'nodes': [
+        'uid': 21,
+        'label': 'Салон 2',
+        'children': [
           {
-            'id': 211,
-            'title': 'Менеджеры',
-            'nodes': [
+            'uid': 211,
+            'label': 'Менеджеры',
+            'children': [
               {
-                'id': 2111,
-                'title': 'Бондарь',
-                'nodes': ['']
+                'uid': 2111,
+                'label': 'Бондарь',
+                iconLeaf: true
               },
               {
-                'id': 2112,
-                'title': 'Шеховцов',
-                'nodes': ['']
+                'uid': 2112,
+                'label': 'Шеховцов',
+                iconLeaf: true
               }]
           }]
       }]
       }]
-  $scope.my_treedata = [{
-    label: 'Languages',
-    children: [
-      {label: 'Languages1',
-              children: [
-                        'Jade'
-                        ,'Less'
-                        ,'Coffeescript'
-      ]}
-,     {label: 'Languages2',
-              children: [
-                        'Jade1'
-                        ,'Less1'
-                        ,'Coffeescript1'
-      ]}
-      ,'Less3'
-      ,'Coffeescript3'
-    ]
-  }]
+
+$scope.my_tree_handler = function(branch){
+  console.log(branch);
+}
+
   $scope.orders = [
     {id:201, code:'252K-001', customer: 'Иванов И.И.', sum: '25 635.00 UAH',payed:'18 700.00 UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'created', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'unfinished',status_goal:'unfinished'},
     {id:202, code:'252K-002', customer: 'Иванов И.И.', sum: '152 356.00 UAH',payed:'152 356.00 UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},

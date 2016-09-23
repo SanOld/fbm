@@ -10,7 +10,7 @@ $this->breadcrumbs = array('Заказы');
 <div ng-controller="RequestController" class="wraper container-fluid"  ng-cloak>
   <div class="row">
     <div class="container-fluid center-block">
-      <div spi-hint-main header="_hint.header.title" text="_hint.header.text"></div>
+      <!--<div spi-hint-main header="_hint.header.title" text="_hint.header.text"></div>-->
       <div class="panel panel-default">        
         <div class="panel-heading clearfix">
           <h1 class="panel-title col-lg-6">Заказы</h1>
@@ -45,7 +45,7 @@ $this->breadcrumbs = array('Заказы');
                 <div class="form-group">
                   <div class="form-group">
                     <label>Поиск по коду</label>
-                    <input ng-change="updateGrid()" type="search" ng-model="filter.code" class="form-control popup-input" placeholder="Kennziffer eingegeben" ng-hide="user.type  == 't'">
+                    <input ng-change="updateGrid()" type="search" ng-model="filter.code" class="form-control popup-input" placeholder="Введите код" ng-hide="user.type  == 't'">
                     <ui-select ng-change="updateGrid()" ng-model="filter.code">
                       <ui-select-match allow-clear="true" placeholder="Введите номер заказа">{{$select.selected.code}}</ui-select-match>
                       <ui-select-choices repeat="item.code as item in requests | filter: $select.search | orderBy: 'code'">
@@ -117,16 +117,11 @@ $this->breadcrumbs = array('Заказы');
           <div  class="flex-row">
 
             <div  class="col-lg-2" resizable r-directions="['right']"  r-flex="true" >
-              <div class="panel panel-default">
+              <div class="panel panel-default" resizable r-directions="['bottom']">
                 <div class="panel-heading-small">
                   Группы заказов
                 </div>
                 <div class="panel-body-small">
-                  <div ui-tree>
-                    <ol ui-tree-nodes="" ng-model="tree" id="tree-root">
-                      <li ng-repeat="node in tree" ui-tree-node ng-include="'nodes_renderer.html'"></li>
-                    </ol>
-                  </div>
                   <abn-tree
                       tree-data         = "my_treedata"
                       tree-control      = "my_tree"
@@ -137,6 +132,14 @@ $this->breadcrumbs = array('Заказы');
                       expand-level      = "2"
                       initial-selection = "Vegetable">
                   ></abn-tree>
+                </div>
+              </div>
+              <div class="panel panel-default">
+                <div class="panel-heading-small">
+                  Изображение
+                </div>
+                <div class="panel-body-image">
+
                 </div>
               </div>
             </div>
@@ -225,7 +228,7 @@ $this->breadcrumbs = array('Заказы');
           </div>
   
           <div class="clearfix">
-            <div class="notice {{status.code == 'decline' ? 'decline-div' : ''}}" ng-repeat="status in statuses | filter:{virtual: 0}">
+            <div class="notice {{status.code == 'decline' ? 'decline-div' : ''}}" ng-repeat="status in statuses ">
               <span class="color-notice" ng-class="status.code+'-row'"></span>
               {{status.name}}
             </div>
@@ -281,11 +284,11 @@ $this->breadcrumbs = array('Заказы');
 <script type="text/ng-template" id="printDocuments.html">
   <div class="panel panel-color panel-primary">
     <div class="panel-heading clearfix">
-      <h3 class="m-0 pull-left">Dokumente drucken - {{::code}}</h3>
+      <h3 class="m-0 pull-left">Заказ - {{::code}}</h3>
       <button type="button" class="close" ng-click="cancel()"><i class="ion-close-round "></i></button>
     </div>
     <div class="panel-body">
-      <h3 class="m-b-30 text-center">Dokumente zum Druck wählen</h3>
+      <h3 class="m-b-30 text-center">Документы для печати</h3>
       <div ng-repeat="template in templates" class="doc-print" ng-hide="!userCan || (user.type == 't' && user.is_finansist != '1' && template.type_name != 'Zielvereinbarung') ">
         <div class="holder-doc-print">
           <span class="name-doc">{{template.type_name}}:</span>
@@ -293,7 +296,7 @@ $this->breadcrumbs = array('Заказы');
         </div>
         <div class="btn-row">
           <button class="btn w-xs" data-target="#modal-1" data-toggle="modal" ng-click="printDoc(template)">
-            <span>Drucken</span>
+            <span>Печать</span>
             <i class="ion-printer"></i>
           </button>
         </div>
@@ -303,7 +306,7 @@ $this->breadcrumbs = array('Заказы');
     <div class="row p-t-10 text-center">
       <div class="form-group group-btn m-t-20">
         <div class="col-lg-12">
-          <button class="btn w-lg cancel-btn" ng-click="cancel()">ABBRECHEN</button>
+          <button class="btn w-lg cancel-btn" ng-click="cancel()">Отмена</button>
         </div>
       </div>
     </div>
@@ -313,14 +316,14 @@ $this->breadcrumbs = array('Заказы');
 <script type="text/ng-template" id="chooseDocuments.html">
   <div class="panel panel-color panel-primary">
     <div class="panel-heading clearfix">
-      <h3 class="m-0 pull-left">Druck-Template wählen</h3>
+      <h3 class="m-0 pull-left">Документы для печати</h3>
       <button type="button" class="close" ng-click="cancel()"><i class="ion-close-round "></i></button>
     </div>
     <div class="panel-body text-center">
-      <h3 class="m-b-30">Vertragsvorlage für {{::countElements}} Elemente auswählen</h3>
+      <h3 class="m-b-30">Выберите шаблоны документов</h3>
       <div class="col-lg-12 text-left">
         <div class="form-group">
-          <label>Zielvereinbarung</label>
+          <label>Договор</label>
           <ui-select ng-disabled="!$select.items.length" ng-change="updateGrid()" ng-model="form.doc_target_agreement_id">
             <ui-select-match allow-clear="true" placeholder="{{$select.disabled ? '(keine Items sind verfügbar)' :'(Nicht ausgewählt)'}}">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="item.id as item in goal_agreements | filter: $select.search | orderBy: 'name'">
@@ -329,7 +332,7 @@ $this->breadcrumbs = array('Заказы');
           </ui-select>
         </div>
         <div class="form-group">
-          <label>Antrag</label>
+          <label>Спецификация</label>
           <ui-select ng-disabled="!$select.items.length" ng-change="updateGrid()" ng-model="form.doc_request_id">
             <ui-select-match allow-clear="true" placeholder="{{$select.disabled ? '(keine Items sind verfügbar)' :'(Nicht ausgewählt)'}}">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="item.id as item in request_agreements | filter: $select.search | orderBy: 'name'">
@@ -338,7 +341,7 @@ $this->breadcrumbs = array('Заказы');
           </ui-select>
         </div>
         <div class="form-group">
-          <label>Fördervertrag</label>
+          <label>Приложение</label>
           <ui-select ng-disabled="!$select.items.length" ng-change="updateGrid()" ng-model="form.doc_financing_agreement_id">
             <ui-select-match allow-clear="true" placeholder="{{$select.disabled ? '(keine Items sind verfügbar)' :'(Nicht ausgewählt)'}}">{{$select.selected.name}}</ui-select-match>
             <ui-select-choices repeat="item.id as item in funding_agreements | filter: $select.search | orderBy: 'name'">
@@ -351,8 +354,8 @@ $this->breadcrumbs = array('Заказы');
     <div class="row p-t-10 text-center">
       <div class="form-group group-btn m-t-20">
         <div class="col-lg-12">
-          <button class="btn w-lg cancel-btn" ng-click="cancel()">Abbrechen</button>
-          <button class="btn w-lg custom-btn" ng-click="ok()">Speichern</button>
+          <button class="btn w-lg cancel-btn" ng-click="cancel()">Отмена</button>
+          <button class="btn w-lg custom-btn" ng-click="ok()">Принять</button>
         </div>
       </div>
     </div>

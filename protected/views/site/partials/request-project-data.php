@@ -64,7 +64,7 @@
                 <div class="sum  clearfix">
                   <strong>Стоимость</strong>
                   <div class="col-lg-10 p-l-0 m-t-10">
-                      <input required name = "{{('Stellenanteil'+$index)}}" type="text" class="form-control" ng-init = " numValidate2(school,'rate', 3)" ng-change=" numValidate(school,'rate', 3); updateTrainingCost(school)" ng-model="school.rate">
+                      <input required name = "{{('Stellenanteil'+$index)}}" type="text" class="form-control"   value = "€ {{18284 | number:2}}">
                   </div>
                 </div>
               </div>
@@ -72,7 +72,7 @@
                 <span class="sum calendar-ico clearfix">
                   <strong>Доп.затраты</strong>
                   <div class="col-lg-10 p-l-0 m-t-10">
-                      <input type="text" class="form-control" ng-init = "numValidate2(school,'month_count');" ng-change="numValidate(school,'month_count');" ng-model="school.month_count">
+                      <input type="text" class="form-control"  value = "€ {{520 | number:2}}">
                   </div>
                 </span>
               </div>
@@ -80,7 +80,7 @@
                 <span class="sum clearfix">
                   <strong>Оплачено</strong>
                   <div class="col-lg-10 p-l-0 m-t-10">
-                      <input type="text" class="form-control" ng-init = "numValidate2(school,'training_cost');"  ng-change="numValidate(school,'training_cost');updateResultCost();" ng-model="school.training_cost">
+                      <input type="text" class="form-control"  value = "€ {{10500 | number:2}}">
                   </div>
                 </span>
               </div>
@@ -89,7 +89,7 @@
                   <strong>Задолженность</strong>
                   <!--<span>€ 11500,00</span>-->
                   <div class="col-lg-10 p-l-0 m-t-10">
-                      <input type="text" class="form-control" ng-init = "numValidate2(school,'overhead_cost');" ng-change="numValidate(school,'overhead_cost');updateResultCost();" ng-model="school.overhead_cost">
+                      <input type="text" class="form-control"  value = "€ {{8304 | number:2}}">
                   </div>
                 </span>
               </div>

@@ -133,6 +133,7 @@
             <button ng-disabled="data.status_finance == 'accepted' || (data.status_finance == 'in_progress' && !canAccept) || !canFormEdit || !canEdit()"  ng-change="calculateAllEmployees(request_users)" ng-class="data.is_umlage != 1 ? 'active' : 'btn-default'" ng-model="data.is_umlage" uib-btn-radio="0" class="btn btn-sm">NEIN</button>
           </div>
         </div>
+
         <div id="accordion-account" class="panel-group panel-group-joined row">
           <div class="panel panel-default row employee-row" data-name="{{emploee.user.name || 'ALLES ANZEIGEN'}}" ng-if="!emploee.is_deleted" ng-repeat="(key, emploee) in request_users">
             <div class="panel-heading">
@@ -353,6 +354,7 @@
             </div>
           </div>
         </div>
+        
         <div class="m-b-30">
           <h3 class="panel-title title-custom m-b-15">
             Ausgaben: Sachkosten

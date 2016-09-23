@@ -27,21 +27,21 @@ $this->breadcrumbs = array('Anträge'=>'/requests', 'Antrag {{request_code}}');
 					<uib-tab class="project" index="'project-data'" select="setTab('project-data')" heading="Данные заказа">
 						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-project-data.php'); ?>
           </uib-tab>
-					<uib-tab ng-if="isFinansist || (is_bonus_project == '1' && user_type == 's')" class="finance {{financeStatus}}" index="'finance-plan'" select="setTab('finance-plan')" heading="Платежи">
-						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-financial-plan.php'); ?>
-					</uib-tab>
-					<uib-tab class="concepts {{conceptStatus}}" index="'school-concepts'" select="setTab('school-concepts')" heading="Доп. услуги">
+          <uib-tab class="schools-goals {{goalsStatus}}"  index="'order-list'" select="setTab('order-list')" heading="Состав заказа">
+						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-order-list.php'); ?>
+          </uib-tab>
+          <uib-tab class="finance {{financeStatus}}"  index="'payments'" select="setTab('payments')" heading="Платежи">
+						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-payments.php'); ?>
+          </uib-tab>
+					<uib-tab class="concepts {{conceptStatus}}" index="'school-concepts'" select="setTab('school-concepts')" heading="Статус заказа">
 						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-concept-data.php'); ?>
 					</uib-tab>
-          <uib-tab class="schools-goals {{goalsStatus}}"  index="'schools-goals'" select="setTab('schools-goals')" heading="Состав заказа">
+          <uib-tab class="schools-goals {{goalsStatus}}"  index="'status'" select="setTab('schools-goals')" heading="Документы">
 						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-goals-data.php'); ?>
           </uib-tab>
-          <uib-tab class="schools-goals {{goalsStatus}}"  index="'payments'" select="setTab('schools-goals')" heading="Платежи">
-						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-goals-data.php'); ?>
-          </uib-tab>
-          <uib-tab class="schools-goals {{goalsStatus}}"  index="'status'" select="setTab('schools-goals')" heading="Статус заказа">
-						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-goals-data.php'); ?>
-          </uib-tab>          
+					<uib-tab ng-if="isFinansist || (is_bonus_project == '1' && user_type == 's')" class="concepts {{conceptStatus}}" index="'finance-plan'" select="setTab('finance-plan')" heading="Приложение">
+						<?php include(Yii::app()->getBasePath().'/views/site/partials/request-financial-plan.php'); ?>
+					</uib-tab>
 				</uib-tabset>
 				<br>
 				<div class="form-group group-btn row no-print">

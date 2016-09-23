@@ -1,4 +1,4 @@
-spi.controller('RequestController', function ($scope, $rootScope, network, Utils, $location, RequestService, SweetAlert, $timeout, $uibModal) {
+spi.controller('RequestController', function ($scope, $rootScope, network, Utils, $location, RequestService, SweetAlert, $timeout, $uibModal, GridService) {
   if (!$rootScope._m) {
     $rootScope._m = 'request';
   }
@@ -2499,4 +2499,703 @@ spi.controller('SendToAcceptController', function ($scope, $rootScope, $uibModal
     $uibModalInstance.dismiss('cancel');
   };
 });
+
+
+
+spi.controller('RequestOrderListController', function ($scope, network, RequestService, Utils, $timeout) {
+  $scope.users = [];
+  $scope.IBAN = {};
+  $scope.request_users = [{}]; //create one user by default
+  $scope.prof_associations = [{}]; //create one association by default
+  $scope.financeSchools = [];
+  $scope.add_finance_user = false;
+  $scope.add_employee_user = false;
+  $scope.dublicate = [false];
+  $scope.required = [false];
+  $scope.userLoading = false;
+  $scope.errorShow = false;
+  $scope.errorArray = [];
+
+  $scope.canAccept = ['a','p'].indexOf(network.user.type) !== -1;
+  $scope.canFormEdit = ['a','t'].indexOf(network.user.type) !== -1;
+  $scope.comment = '';
+
+  $scope.canEdit  = function (){
+//    return  RequestService.canEdit();
+  }
+
+  $scope.canAcceptEarly = function(status) {
+    return !(network.user.type == 'p' && status != 'in_progress');
+  };
+
+  $scope.escapeFinanceUser = function(event){
+    if(event.which == 27 ){
+      $scope.addNewFinanceUser();
+    };
+  }
+
+  $scope.escapeEmployeeUser = function(event, idx){
+    if(event.which == 27 ){
+      $scope.addNewEmployeeUser(idx);
+    };
+  }
+
+  $scope.addNewFinanceUser = function(){
+    $scope.dublicate['finance'] = false;
+    $scope.required['finance'] = false;
+    if(!$scope.add_finance_user){
+      $scope.add_finance_user = true;
+      $timeout(function(){
+        angular.element('#finance_user').focus();
+      });
+    }else{
+      $scope.add_finance_user = false;
+      $scope.new_fina_user = "";
+    }
+  }
+  $scope.addNewEmployeeUser = function(idx){
+      $scope.dublicate['employee'] = false;
+      $scope.required['employee'] = false;
+      if(!$scope.add_employee_user){
+        $scope.add_employee_user = true;
+        $timeout(function(){
+          angular.element('#employee_user').focus();
+        });
+      }else{
+        $scope.add_employee_user = false;
+        $scope.request_users[idx].new_user_name = "";
+      }
+  }
+  $scope.getPerformerUsers = function(callback){
+    network.get('User', {type: 't', relation_id: $scope.data.performer_id}, function (result, response) {
+      if (result) {
+        $scope.users = response.result;
+        $scope.updateUserSelect();
+        $scope.selectFinanceResult = Utils.getRowById(response.result, $scope.data.finance_user_id);
+        callback = callback || function(){};
+        callback();
+      }
+    });
+  };
+
+  $scope.getEmployeeUsers = function(id,emploee, callback){
+    network.get('User', {type: 't', relation_id: $scope.data.performer_id}, function (result, response) {
+      if (result) {
+        $scope.users = response.result;
+        emploee.user = Utils.getRowById($scope.users, id);
+        $scope.employeeOnSelect(emploee.user, emploee);
+        callback = callback || function(){};
+        callback();
+      }
+    });
+  };
+
+  $scope.submitToAddUser = function(event, new_finance_user){
+    $scope.dublicate['finance'] = false;
+    $scope.required['finance'] = false;
+    if(event.which == 13 || event.type == 'click'){
+      if(!new_finance_user){
+        $scope.required['finance'] = true;
+      }else{
+        $scope.userLoading = true;
+        var name = new_finance_user.split(/[\s,\.]+/);
+        if(name.length > 2){
+          var last_name = "";
+          for(var i = 1; i < name.length; i++){
+          last_name = last_name + " " + name[i];
+          };
+        }else{
+          var last_name = name[1] || "";
+        };
+        $scope.users.forEach(function(item, i, arr){
+          if(item.first_name.toUpperCase() == name[0].toUpperCase() && item.last_name.toUpperCase() == last_name.toUpperCase()){
+            $scope.dublicate['finance'] = true;
+            $scope.userLoading = false;
+          }
+        });
+        if(!$scope.dublicate['finance']){
+          $scope.new_finance_user = {
+            first_name: name[0],
+            last_name: last_name,
+            sex: 3,
+            is_virtual: 1,
+            is_finansist: 1,
+            type_id: 3,
+            email: network.user.email,
+            type: 't',
+            password: '',
+            relation_id: $scope.data.performer_id
+        };
+        var callback = function (result, response) {
+          if (result) {
+            $scope.data.finance_user_id = response.id;
+            $scope.getPerformerUsers(function(){});
+            $scope.add_finance_user = false;
+            $scope.new_fina_user = "";
+            $scope.userLoading = false;
+          } else {
+            $scope.error = getError(response.system_code);
+            $scope.userLoading = false;
+          }
+        };
+          network.post('user', $scope.new_finance_user, callback);
+        }
+      }
+    }
+  }
+
+  $scope.submitToAddUserEmpl = function(event, new_user, idx){
+    $scope.collapsingUser = idx;
+    $scope.dublicate['employee'] = false;
+    $scope.required['employee'] = false;
+    if(event.which == 13 || event.type == 'click'){
+      if(!new_user){
+        $scope.required['employee'] = true;
+      }else{
+        $scope.userLoading = true;
+        var name = new_user.split(/[\s,\.]+/);
+        if(name.length > 2){
+          var last_name = "";
+          for(var i = 1; i < name.length; i++){
+            last_name = last_name + " " + name[i];
+          };
+        }else{
+          var last_name = name[1] || "";
+        };
+        $scope.users.forEach(function(item, i, arr){
+          if(item.first_name.toUpperCase() == name[0].toUpperCase() && item.last_name.toUpperCase() == last_name.toUpperCase()){
+            $scope.dublicate['employee'] = true;
+            $scope.userLoading = false;
+          }
+        });
+        if(!$scope.dublicate['employee']){
+          $scope.new_employee_user = {
+            first_name: name[0],
+            last_name: last_name,
+            sex: 3,
+            is_virtual: 1,
+            type_id: 3,
+            email: network.user.email,
+            type: 't',
+            password: '',
+            relation_id: $scope.data.performer_id
+          };
+          var callback = function (result, response) {
+            if (result) {
+              $scope.getEmployeeUsers(response.id, $scope.request_users[idx], function(){
+                $scope.request_users[idx].user_id = response.id;
+              });
+              $scope.request_users[idx].new_user_name = "";
+              $scope.add_employee_user = false;
+              $scope.userLoading = false;
+            } else {
+              $scope.error = getError(response.system_code);
+              $scope.userLoading = false;
+            }
+          };
+          network.post('user', $scope.new_employee_user, callback);
+         }
+      }
+    }
+  }
+  var usersById = {};
+
+//  RequestService.afterSave = function(){
+//    $scope.updateFinPlanUsers('submit');
+//    $scope.updateFinPlanProfAssociation();
+//  }
+//  RequestService.financePlanData = function(){
+//    var data = {};
+//    data.request =  { 'revenue_description':    $scope.data.revenue_description
+//                    , 'revenue_sum':            $scope.data.revenue_sum
+//                    , 'emoloyees_cost':         $scope.emoloyeesCost
+//                    , 'training_cost':          $scope.training_cost
+//                    , 'overhead_cost':          $scope.overhead_cost
+//                    , 'prof_association_cost':  $scope.prof_association_cost
+//                    , 'total_cost':             $scope.total_cost
+//                    , 'bank_details_id':        $scope.data.bank_details_id
+//                    , 'status_finance':         $scope.data.status_finance
+//                    , 'is_umlage':              $scope.data.is_umlage
+//                    , 'finance_user_id':        $scope.data.finance_user_id
+//                    };
+//    data.users = $scope.request_users;
+//    data.prof_associations = $scope.prof_associations;
+//    data.schools = $scope.financeSchools;
+//    var finPlan = angular.copy(data);
+//    angular.forEach(finPlan.users, function(val, key) {
+//      val.add_cost = val.addCost;
+//      val.full_cost = val.fullCost;
+//      delete val.user;
+//      delete val.addCost;
+//      delete val.fullCost;
+//      delete val.name;
+//      delete val.sex;
+//      delete val.group_name;
+//      delete val.remuneration_name;
+//    });
+//    angular.forEach(finPlan.schools, function(val, key) {
+//      delete val.school_name;
+//      delete val.school_number;
+//    });
+//    return finPlan;
+//  };
+
+  var modelToName = { 'data.finance_user_id': 'Ansprechpartner für Rückfragen zum Finanzplan'
+                    , 'data.bank_details_id': 'Bankverbindung'
+                    , 'emploee.user_id': 'Mitarbeiter/in hinzufügen'
+                    , 'emploee.group_id': 'Entgeltgruppe'
+                    , 'emploee.remuneration_level_id': 'Entgeltstufe'
+                    , 'emploee.other': 'Sonstiges'
+                    , 'emploee.cost_per_month_brutto': 'Kosten pro Monat (AN-Brutto)'
+                    , 'emploee.month_count': 'Geplante Monate im Projekt'
+                    , 'emploee.hours_per_week': 'Arbeitsstunden pro Woche'
+                    , 'emploee.annual_bonus': 'Jahressonderzahlungen'
+                    , 'emploee.additional_provision_vwl': 'Zusatzversorgung (VWL) JANEIN'
+                    , 'emploee.supplementary_pension': 'Zusatzversorgung (betriebl. Altersversorgung)'
+
+
+                    , 'association.name': 'Berufsgenossenschaftsbeiträge Name'
+                    , 'association.sum': 'Berufsgenossenschaftsbeiträge Beitrag'
+                    , 'data.revenue_description': 'Sonstige Einnahmen'
+                    , 'data.revenue_sum': 'Sonstige Einnahmen Betrag'
+                    }
+
+
+  $scope.fieldsError2 = function (model, modelName){
+
+    var name = modelName;
+    var result = (model == '' || model == 0 || model == '0' || model == '0,00' || model == undefined);
+
+    var index = $scope.errorArray.indexOf(name);
+
+    if(result && index==-1 && name != undefined ){
+      $scope.errorArray.push(name);
+    } else if(!result && index != -1) {
+      $scope.errorArray.splice(index,1);
+    }
+    return result;
+ }
+
+  $scope.submitForm = function(status) {
+
+    callback = function(){
+        data['status_finance'] = status;
+        network.put('request/'+$scope.$parent.requestID, data, function(result, response) {
+          if(result) {
+            $scope.data.status_finance = status;
+            $scope.data.comment = status == 'accepted' ? '' : $scope.data.finance_comment;
+            $scope.$parent.setFinanceStatus(status);
+            RequestService.afterSave();
+            if (network.user.type == 'a') {
+              $scope.$parent.submitRequest();
+            }
+          }
+        });
+    }
+
+    if(['in_progress', 'accepted', 'rejected'].indexOf(status) === -1) return false;
+    var data = {};
+    switch (status) {
+      case 'accepted':
+
+        $scope.errorShow = true;
+        if($scope.errorArray.length){
+          return $scope.$parent.doErrorIncompleteFields($scope.errorArray);
+        } else {
+          $scope.errorShow = false;
+        }
+        RequestService.acceptMSG(callback);
+        break;
+      case 'in_progress':
+
+        var finPlan = RequestService.financePlanData();
+        delete finPlan.request;
+        data.finance_user_id = $scope.data.finance_user_id;
+        data.bank_details_id = $scope.data.bank_details_id;
+        data.revenue_description = $scope.data.revenue_description;
+        data.revenue_sum = $scope.data.revenue_sum;
+        data.finance_plan = finPlan;
+
+        $scope.errorShow = true;
+        if($scope.errorArray.length){
+          return   $scope.$parent.doErrorIncompleteFields($scope.errorArray);
+        } else {
+          $scope.errorShow = false;
+        }
+        RequestService.sendMSG(callback);
+        break;
+      case 'rejected':
+        if(!$scope.data.comment) return false;
+        data.finance_comment = $scope.data.comment;
+        RequestService.acceptMSG(callback);
+        break;
+    }
+  };
+
+//  RequestService.initFinancePlan = function(data){
+//    $scope.users = data.users;
+//    $scope.updateUserSelect();
+//    $scope.data = data;
+//    $scope.data.is_umlage = $scope.data.is_umlage*1;
+//    if ($scope.data.finance_user_id == "0") {
+//      $scope.data.finance_user_id = '';
+//    }
+//    if ($scope.data.bank_details_id == "0") {
+//      $scope.data.bank_details_id = '';
+//    }
+//    if ($scope.data.revenue_sum != undefined ) {
+//      $scope.numValidate2(data,'revenue_sum');
+//    }
+//    $scope.$parent.setFinanceStatus(data.status_finance);
+//    $scope.selectFinanceResult = Utils.getRowById($scope.users, data.finance_user_id);
+//
+//    angular.forEach($scope.users, function(val, key) {
+//      usersById[val.id] = val;
+//    });
+//
+//    network.get('bank_details', {performer_id: data.performer_id, request_id: $scope.$parent.requestID}, function (result, response) {
+//      if (result) {
+//        $scope.bank_details = response.result;
+//        angular.forEach($scope.bank_details, function(val, key) {
+//          if(val.id == $scope.data.bank_details_id) {
+//            $scope.updateIBAN(val);
+//            return false;
+//          }
+//        });
+//
+//      }
+//    });
+//
+//    $scope.updateFinPlanUsers();
+//
+//  }
+
+  $scope.updateFinPlanUsers = function(submit) {
+    var submit = submit || false;
+    network.get('request_user', {request_id: $scope.$parent.requestID}, function (result, response) {
+      if (result && !submit) {
+        $scope.request_users = response.result;
+        if(response.count == '0') {
+          $scope.request_users = [{}];
+        } else {
+          usersById=[];
+          angular.forEach($scope.users, function(val, key) {
+            usersById[val.id] = val;
+          });
+          angular.forEach($scope.request_users, function(val, key) {
+            $scope.calculateEmployee(val);
+            val.user = usersById[val.user_id];
+          });
+          $timeout(function(){
+            $scope.updateUserSelect();
+          })
+        }
+      }
+    });
+  }
+  $scope.updateFinPlanProfAssociation = function() {
+    network.get('request_prof_association', {request_id: $scope.$parent.requestID}, function (result, response) {
+      if (result) {
+        $scope.prof_associations = response.result;
+        if(response.count == '0') {
+          $scope.prof_associations = [{}];
+        }
+      }
+    });
+  }
+
+  network.get('request_school_finance', {request_id: $scope.$parent.requestID}, function (result, response) {
+    if (result) {
+      $scope.schools_data = response.result;
+      $scope.financeSchools = response.result;
+      $scope.updateResultCost();
+    }
+  });
+
+  network.get('remuneration_level', {}, function (result, response) {
+    if (result) {
+      $scope.remuneration_level = response.result;
+    }
+  });
+
+  $scope.updateFinPlanProfAssociation();
+
+  network.get('request_financial_group', {}, function (result, response) {
+    if (result) {
+      $scope.request_financial_group = response.result;
+    }
+  });
+
+
+  var forValidate = {'cost_per_month_brutto':1, 'annual_bonus':1, 'additional_provision_vwl':1, 'supplementary_pension':1}
+  var toNum = {'have_annual_bonus':1, 'have_additional_provision_vwl':1, 'have_supplementary_pension':1}
+
+  function num(val) {
+    val = val || 0;
+    val += '';
+    return val.split(',').join('.')*1
+  }
+
+  $scope.undelitetdCount = function(list){
+    var cnt = 0;
+    $.each(list, function(){
+      if(!this.is_deleted){
+        cnt++;
+      }
+    })
+    return cnt;
+  }
+
+  $scope.calculateAllEmployees = function(emploes){
+    $.each(emploes, function(){
+      $scope.calculateEmployee(this);
+    });
+  }
+  $scope.calculateEmployee = function(empl){
+    for(var key in forValidate) {
+      $scope.numValidate(empl,key);
+    }
+    for(var key in toNum) {
+      empl[key] = num(empl[key]);
+    }
+
+    var umlage = $scope.data.is_umlage===1?0.25:0.21;
+    var mc = num(empl.month_count);
+    empl.brutto = num(empl.cost_per_month_brutto) * mc
+                + num(empl.annual_bonus) * empl.have_annual_bonus
+                + num(empl.additional_provision_vwl) * mc * num(empl.have_additional_provision_vwl)
+                + num(empl.supplementary_pension) * (mc + empl.have_annual_bonus) * num(empl.have_supplementary_pension);
+    empl.brutto = Math.ceil(empl.brutto/100)*100; // Результат округлять вверх до 100 евро. Например: 1201 = 1300
+
+    var summ  = num(empl.cost_per_month_brutto) * mc
+              + num(empl.annual_bonus) * empl.have_annual_bonus
+              + num(empl.additional_provision_vwl) * mc * empl.have_additional_provision_vwl;
+    empl.addCost = summ * umlage;
+    empl.addCost = Math.ceil(empl.addCost/100)*100;
+    empl.fullCost = empl.brutto + empl.addCost;
+    $scope.updateResultCost();
+  }
+  $scope.updateResultCost = function(){
+    $scope.emoloyeesCost = 0;
+    $scope.training_cost = 0;
+    $scope.overhead_cost = 0;
+    $scope.prof_association_cost = 0;
+    angular.forEach($scope.request_users, function(empl, key) {
+      if(!empl.is_deleted) {
+        $scope.emoloyeesCost += num(empl.fullCost);
+      }
+    });
+    angular.forEach($scope.financeSchools, function(sch, key) {
+      $scope.training_cost += num(sch.training_cost);
+      $scope.overhead_cost += num(sch.overhead_cost);
+    });
+    angular.forEach($scope.prof_associations, function(ps, key) {
+      if(!ps.is_deleted) {
+        $scope.prof_association_cost += num(ps.sum);
+      }
+    });
+    $scope.prof_association_cost = num($scope.prof_association_cost);
+//    $scope.revenue_sum = num($scope.data.revenue_sum);
+    $scope.total_cost = $scope.emoloyeesCost + $scope.training_cost + $scope.overhead_cost + $scope.prof_association_cost - $scope.revenue_sum;
+
+  }
+  $scope.updateTrainingCost = function(school){
+    var definer = 0;
+    if(num(school.rate) == 0){
+      definer = 0.5;
+      school.overhead_cost = 3000 * definer;
+    }else if(num(school.rate) % 1 == 0){
+      definer = num(school.rate);
+      school.overhead_cost = 3000 * definer;
+    }else if(num(school.rate) % 1 <= 0.5){
+      definer = Math.floor(num(school.rate)) + 0.5;
+      school.overhead_cost = 3000 * definer;
+    }else {
+      definer = Math.round(num(school.rate));
+      school.overhead_cost = 3000 * definer;
+    }
+    $scope.updateResultCost();
+  }
+
+  $scope.numValidate2 = function(obj, key,cnt){
+    cnt = cnt || 2;
+    if(obj != undefined) {
+      if(!obj[key]) {
+        obj[key] = 0;
+      } else {
+        obj[key] = obj[key].split('.').join(',');
+      }
+    }
+
+  }
+  $scope.numValidate = function(obj, key,cnt){
+    cnt = cnt || 2;
+    if(!obj[key]) {
+      obj[key] = 0;
+    } else {
+      obj[key] = obj[key].split('.').join(',');
+      obj[key] = obj[key].split(/[^0-9\,]/).join('');
+      var r = new RegExp('([0-9]+)([\,]{0,1})([0-9]{0,'+cnt+'})[0-9]*', 'i');
+      var m = obj[key].match(r);
+      try{
+        if(m[1][0]=='0' && m[1].length>1){
+          m[1] = m[1].substring(1,m[1].length);
+        }
+        obj[key] = m[1]+m[2]+m[3];
+      } catch(e) {
+        obj[key] = '';
+      }
+    }
+  }
+  $scope.maxLength = function(obj, key, length){
+    length = length || 50;
+
+
+    if(!obj[key]) {
+      obj[key] = '';
+    } else {
+        var r = new RegExp('.{' + length + '}','i');
+        var m = obj[key].match(r);
+      try{
+        if(m != null){
+          obj[key] = m[0];
+        }
+      } catch(e) {
+        obj[key] = '';
+      }
+    }
+
+  }
+  $scope.maxValue = function(obj, key, value){
+    if(!obj[key]) {
+      obj[key] = '';
+    } else {
+      if (obj[key] > value){
+        obj[key] = value;
+      }
+    }
+
+  }
+  $scope.deleteEmployee = function(idx){
+      if($scope.request_users[idx].id) {
+        $scope.request_users[idx].is_deleted = true;
+        $scope.request_users[idx].user_id = 0;
+      } else {
+        $scope.request_users.splice(idx, 1);
+      }
+      $scope.updateUserSelect();
+      $scope.updateResultCost();
+
+      $scope.errorArray = [];
+  }
+  $scope.deleteProfAssociation = function(idx){
+      if($scope.prof_associations[idx].id) {
+        $scope.prof_associations[idx].is_deleted = true;
+      } else {
+        $scope.prof_associations.splice(idx, 1);
+      }
+      $scope.updateResultCost();
+
+      $scope.errorArray = [];
+  }
+
+
+//  RequestService.updateFinansistFP = function(id){
+//    $scope.data.finance_user_id = id;
+//    $scope.selectFinanceResult = Utils.getRowById($scope.users, $scope.data.finance_user_id);
+//  }
+
+  $scope.onSelectCallback = function (item, model, type){
+    switch (type){
+      case 3:
+        $scope.selectFinanceResult = item ;
+        RequestService.updateFinansistPD($scope.data.finance_user_id)
+        break;
+    }
+  }
+  $scope.updateIBAN = function (item){
+    $scope.IBAN = item;
+  }
+  $scope.updateUserSelect = function (){
+    var idx = {};
+    angular.forEach($scope.request_users, function(empl, key) {
+      empl.user_id = empl.user_id != '0'?empl.user_id:'';
+      idx[empl.user_id] = true;
+    });
+    angular.forEach($scope.users, function(empl, key) {
+      empl.is_selected = idx[empl.id]?1:0;
+
+    });
+  }
+  $scope.employeeOnSelect = function (item, employee){
+    $scope.updateUserSelect();
+    employee.user = item;
+  }
+
+//  RequestService.hasErrorsFinanceForm = function(){
+//    return $scope.errorArray;
+//  };
+//
+//  RequestService.setErrorsFinanceForm = function(value){
+//    $scope.errorShow = value;
+//  };
+//
+//  RequestService.setStatusFinanceForm = function(status){
+//    $scope.data.status_finance = status;
+//  };
+//
+//  RequestService.isChangedFinanceForm = function(){
+//    return $scope.financePlanForm.$dirty;
+//  }
+//
+//  RequestService.setChangedFinanceForm = function(){
+//    $scope.financePlanForm.$dirty = false;
+//  }
+});
+
+spi.controller('RequestPaymentsController', function ($scope, GridService) {
+   $scope.orders = [
+    {id:201, code:'252K-001', customer: 'Иванов И.И.', sum: '25 635.00',payed:'UAH',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'created', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'unfinished',status_goal:'unfinished'},
+    {id:202, code:'252K-002', customer: 'Иванов И.И.', sum: '152 356.00',payed:'UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: false, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:215, code:'252K-003', customer: 'Иванов И.И.', sum: '14 198.00',payed:'USD',debt:'6 935.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Сидоров С.В.', can_edit: true, can_print: true, status_finance:'accepted',status_concept:'accepted',status_goal:'rejected'},
+    {id:204, code:'235K-001', customer: 'Ребров С.И.', sum: '1 550.00',payed:'UAH',debt:'1 550.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Порошенко П.П.', can_edit: true, can_print: true, status_finance:'rejected',status_concept:'accepted',status_goal:'rejected'},
+    {id:205, code:'124K-011', customer: 'Шевченко А.Н.', sum: '68 500.00',payed:'USD',debt:'58 500.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'in_progress'},
+    {id:206, code:'368K-001', customer: 'Шевченко А.Н.', sum: '25 000.00',payed:'UAH',debt:'5 000.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Гройсман Г.Г.', can_edit: false, can_print: true, status_finance:'unfinished',status_concept:'rejected',status_goal:'rejected'},
+    {id:207, code:'952M-142', customer: 'Ребров С.И.', sum: '12 000.00',payed:'UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Яценюк Я.Я.', can_edit: false, can_print: false, status_finance:'in_progress',status_concept:'in_progress',status_goal:'in_progress'},
+    {id:208, code:'252M-001', customer: 'Ярмоленок А.П.', sum: '320 000.00',payed:'USD',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'wait', manager:'Гройсман Г.Г.', can_edit: false, can_print: true, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:209, code:'236K-001', customer: 'Ярмоленок А.П.', sum: '15 630.00',payed:'UAH',debt:'630.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'acceptable', manager:'Гройсман Г.Г.', can_edit: true, can_print: false, status_finance:'unfinished',status_concept:'accepted',status_goal:'rejected'},
+    {id:216, code:'862K-001', customer: 'Гармаш О.И.', sum: '95 250.00',payed:'UAH',debt:'95 250.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Яценюк Я.Я.', can_edit: false, can_print: true, status_finance:'in_progress',status_concept:'accepted',status_goal:'rejected'},
+    {id:217, code:'657C-001', customer: 'Шовковский А.А.', sum: '25 500.00',payed:'UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'accept', manager:'Сидоров С.В.', can_edit: true, can_print: false, status_finance:'rejected',status_concept:'accepted',status_goal:'rejected'},
+    {id:218, code:'654C-001', customer: 'Шовковский А.А.', sum: '1 000.00',payed:'UAH',debt:'0.00 UAH', date: '2017.08.09', end_date: '2017.10.09', status_code: 'in_progress', manager:'Порошенко П.П.', can_edit: false, can_print: true, status_finance:'in_progress',status_concept:'rejected',status_goal:'rejected'},
+  ]
+  $scope.customers = [
+    {short_name:'Иванов И.И.',id:'1'},
+    {short_name:'Ребров С.И.',id:'2'},
+    {short_name:'Шевченко А.Н.',id:'3'},
+    {short_name:'Ярмоленок А.П.',id:'4'},
+  ]
+
+  $scope.managers = [
+    {short_name:'Сидоров С.В.',id:'1'},
+    {short_name:'Порошенко П.П.',id:'2'},
+    {short_name:'Гройсман Г.Г.',id:'3'},
+    {short_name:'Яценюк Я.Я.',id:'4'},
+  ]
+
+  $scope.statuses = [
+    {code:'in_progress',name:'в работе'},
+    {code:'accept',name:'утвержден'},
+    {code:'acceptable',name:'завершен'},
+    {code:'wait',name:'отложен'},
+    {code:'deactivate',name:'отменен'},
+    {code:'created',name:'создан'}
+  ]
+
+  $scope.filter = {};
+  var grid = GridService();
+  $scope.tableParams1 = grid($scope.orders,$scope.filter);
+  var t=1;
+
+});
+
 
