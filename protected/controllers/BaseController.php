@@ -78,7 +78,9 @@ class BaseController extends Controller {
     $this -> model = CActiveRecord::model($modelFor);
     $headers = getallheaders ();
     $this -> method = strtolower($_SERVER['REQUEST_METHOD']);
-    $auth = new Auth(safe($headers,'Authorization'));
+//     $auth = new Auth(safe($headers,'Authorization'));
+   
+    $auth = new Auth(safe($headers,'Token'));
 
     if(!$auth ->isActive() || !$auth ->checkToken()) {
       $error = $auth->getAuthError();
@@ -87,6 +89,8 @@ class BaseController extends Controller {
       $session_params = 'SET @user_id='.$auth->user['id'].';';
       Yii::app ()->db->createCommand ($session_params)->execute();
     }
+    
+
 
     $this -> model -> user = $auth -> user;
 
@@ -207,7 +211,7 @@ class BaseController extends Controller {
         return array (
             'result' => false,
             'system_code' => 'ERR_OUT_OF_DATE',
-            'code' => '401'
+            'code' => '403'
         );
       } else {
         return array (

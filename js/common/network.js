@@ -118,6 +118,7 @@ spi.service('network', function ($http, configs, localStorageService, Notificati
     $http.defaults.headers.get['Authorization'] = 'token ' + $network.token;
     $http.defaults.headers.common['Authorization'] = 'token ' + $network.token;
     headers = {'Authorization': $network.token};
+    headers = {'token': $network.token};
     params = params || {};
     params.nc = new Date().getTime();
     $http({
